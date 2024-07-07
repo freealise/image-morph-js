@@ -58,7 +58,7 @@ try {
  }
 
  // take first frame and find corners in it
- cap.read(oldFrame);
+ //cap.read(oldFrame);
  let oldGray = new cv.Mat();
  cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGB2GRAY);
  let p0 = new cv.Mat();
@@ -75,7 +75,7 @@ try {
  let err = new cv.Mat();
     
         // start processing.
-        cap.read(frame);
+        //cap.read(frame);
         cv.cvtColor(frame, frameGray, cv.COLOR_RGB2GRAY);
 
         // calculate optical flow
