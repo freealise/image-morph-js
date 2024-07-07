@@ -35,9 +35,6 @@ inputElement_.addEventListener('change', (e) => {
 }, false);
  
 submitBtn.onclick = function() {
- let mat = cv.imread(imgElement);
- cv.imshow('canvasOutput', mat);
-
  // parameters for ShiTomasi corner detection
  let [maxCorners, qualityLevel, minDistance, blockSize] = [10, 0.3, 7, 7];
 
@@ -116,12 +113,11 @@ submitBtn.onclick = function() {
             p0.data32F[i*2+1] = goodNew[i].y;
         }
     } catch (err) {
-        utils.printError(err);
+        alert(err);
     }
  };
  processImage();
 
- mat.delete();
 };
  
 var Module = {
