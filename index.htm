@@ -48,7 +48,7 @@ inputElement_.addEventListener('change', (e) => {
 function findCorners() {
 try {
  // parameters for ShiTomasi corner detection
- let [maxCorners, qualityLevel, minDistance, blockSize] = [10, 0.3, 7, 7];
+ let [maxCorners, qualityLevel, minDistance, blockSize] = [100, 0.3, 9, 9];
 
  // parameters for lucas kanade optical flow
  let winSize = new cv.Size(15, 15);
@@ -65,7 +65,7 @@ try {
  // take first frame and find corners in it
  //cap.read(oldFrame);
  oldGray = new cv.Mat();
- cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGBA2GRAY);
+ cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGB2GRAY);
  let p0 = new cv.Mat();
  let none = new cv.Mat();
  cv.goodFeaturesToTrack(oldGray, p0, maxCorners, qualityLevel, minDistance, none, blockSize);
@@ -80,7 +80,7 @@ try {
     
         // start processing.
         frameGray = new cv.Mat();
-        cv.cvtColor(frame, frameGray, cv.COLOR_RGBA2GRAY);
+        cv.cvtColor(frame, frameGray, cv.COLOR_RGB2GRAY);
 
         // calculate optical flow
         cv.calcOpticalFlowPyrLK(oldGray, frameGray, p0, p1, st, err, winSize, maxLevel, criteria);
