@@ -161,7 +161,7 @@
             play_frame = direction ? play_frame + 1 : play_frame - 1;
             if (play_frame == 0 || play_frame == frames.length - 1) direction = !direction;
 
-            window.requestAnimationFrame(draw);
+            setTimeout(window.requestAnimationFrame(draw), 40);
         }
     </script>
 </body>
