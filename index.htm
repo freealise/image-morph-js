@@ -25,17 +25,17 @@ let imgElement = document.getElementById('imageSrc');
 let inputElement = document.getElementById('fileInput');
 let imgElement_ = document.getElementById('imageSrc_');
 let inputElement_ = document.getElementById('fileInput_');
-let oldGray, frameGray;
+let oldFrame, frame;
 
 inputElement.addEventListener('change', (e) => {
  imgElement.onload = function() {
-  oldGray = cv.imread(imgElement);
+  oldFrame = cv.imread(imgElement);
  }
  imgElement.src = URL.createObjectURL(e.target.files[0]);
 }, false);
 inputElement_.addEventListener('change', (e) => {
  imgElement_.onload = function() {
-  frameGray = cv.imread(imgElement_);
+  frame = cv.imread(imgElement_);
  }
  imgElement_.src = URL.createObjectURL(e.target.files[0]);
 }, false);
@@ -59,7 +59,8 @@ try {
 
  // take first frame and find corners in it
  //cap.read(oldFrame);
- //cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGB2GRAY);
+ let oldGray = new cv.Mat();
+ cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGBA2GRAY);
  let p0 = new cv.Mat();
  let none = new cv.Mat();
  cv.goodFeaturesToTrack(oldGray, p0, maxCorners, qualityLevel, minDistance, none, blockSize);
@@ -73,7 +74,8 @@ try {
  let err = new cv.Mat();
     
         // start processing.
-        //cv.cvtColor(frame, frameGray, cv.COLOR_RGB2GRAY);
+        let frameGray = new cv.Mat();
+        cv.cvtColor(frame, frameGray, cv.COLOR_RGBA2GRAY);
 
         // calculate optical flow
         cv.calcOpticalFlowPyrLK(oldGray, frameGray, p0, p1, st, err, winSize, maxLevel, criteria);
