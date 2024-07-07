@@ -48,7 +48,7 @@ inputElement_.addEventListener('change', (e) => {
 function findCorners() {
 try {
  // parameters for ShiTomasi corner detection
- let [maxCorners, qualityLevel, minDistance, blockSize] = [100, 0.003, 31, 31];
+ let [maxCorners, qualityLevel, minDistance, blockSize] = [100, 0.01, 7, 7];
 
  // parameters for lucas kanade optical flow
  let winSize = new cv.Size(15, 15);
@@ -96,9 +96,9 @@ try {
         }
 
         // draw the tracks
-        for (let i = 0; i < goodNew.length; i++) {
+        for (let i = 0; i < goodOld.length; i++) {
             cv.line(mask, goodNew[i], goodOld[i], color[i], 2);
-            cv.circle(frame, goodNew[i], 5, color[i], -1);
+            cv.circle(frame, goodOld[i], 5, color[i], -1);
         }
         cv.add(frame, mask, frame);
 
