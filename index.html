@@ -31,7 +31,7 @@
         <canvas id="result" width="600" height="600"></canvas><br>
         <input type="text" id="frames" value="30">
         <input type="button" id="generate" value="generate">
-        <input type="button" onclick="draw()" value="draw">
+        <input type="button" onclick="drawing=!drawing;draw();" value="draw">
 
     </div>
 
@@ -134,7 +134,8 @@
         var res_c = document.getElementById("result");
         var res_ctx = res_c.getContext('2d');
         var cnt = 0;
-        var frames = null;
+        var drawing = false;
+        var intv = null;
 
         function draw_all() {
             frames = animator.frames;
@@ -157,14 +158,17 @@
         }
 
         function draw() {
-        try {
             res_ctx.putImageData(frames[play_frame],0,0);
             play_frame = direction ? play_frame + 1 : play_frame - 1;
             if (play_frame == 0 || play_frame == frames.length - 1) direction = !direction;
 
-            setTimeout(window.requestAnimationFrame(draw), 40);
-        } catch(e) {alert(e);}
+            if (drawing === true) {
+                intv = setTimeout(window.requestAnimationFrame(draw), 40);
+            } else {
+                clearTimeout(intv);
+            }
         }
+        
     </script>
 </body>
 </html>
