@@ -45,7 +45,6 @@
 
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="imgwarp.js"></script>
-    <script src="gif.js"></script>
     <script>
 
 
@@ -69,8 +68,17 @@
             var target = 'canvas1';
             var canvas = document.getElementById(target);
             loadImg(target, canvas, img);
-
-            var points = JSON.parse('[{"x":193,"y":216},{"x":226,"y":212},{"x":260,"y":219},{"x":306,"y":218},{"x":338,"y":208},{"x":370,"y":215},{"x":206,"y":229},{"x":226,"y":225},{"x":249,"y":230},{"x":314,"y":230},{"x":340,"y":224},{"x":361,"y":231},{"x":265,"y":313},{"x":297,"y":314},{"x":236,"y":360},{"x":282,"y":361},{"x":325,"y":360},{"x":251,"y":427},{"x":316,"y":428},{"x":165,"y":256},{"x":407,"y":253},{"x":199,"y":112},{"x":354,"y":103},{"x":188,"y":332},{"x":383,"y":328},{"x":211,"y":376},{"x":356,"y":383},{"x":124,"y":403},{"x":444,"y":405},{"x":178,"y":46},{"x":397,"y":49}]');
+            
+            var points = [];
+            var x, y;
+            for (var i=0; i<=16; i++) {
+                for (var j=0; j<4; j++) {
+                    x = i*canvas.width/16;
+                    y = Math.sin(x/canvas.width*Math.PI)*canvas.height*j/4 + canvas.height/2;
+                    points.push({"x":x,"y":y});
+                }
+            }
+            //var points = JSON.parse('[{"x":193,"y":216},{"x":226,"y":212},{"x":260,"y":219},{"x":306,"y":218},{"x":338,"y":208},{"x":370,"y":215},{"x":206,"y":229},{"x":226,"y":225},{"x":249,"y":230},{"x":314,"y":230},{"x":340,"y":224},{"x":361,"y":231},{"x":265,"y":313},{"x":297,"y":314},{"x":236,"y":360},{"x":282,"y":361},{"x":325,"y":360},{"x":251,"y":427},{"x":316,"y":428},{"x":165,"y":256},{"x":407,"y":253},{"x":199,"y":112},{"x":354,"y":103},{"x":188,"y":332},{"x":383,"y":328},{"x":211,"y":376},{"x":356,"y":383},{"x":124,"y":403},{"x":444,"y":405},{"x":178,"y":46},{"x":397,"y":49}]');
             for (var x = 0; x < points.length; x++) {
                 points[x] = new ImgWarper.Point(points[x].x, points[x].y);
             }
@@ -79,7 +87,7 @@
             warper[target].redraw();
 
         };
-        img1.src = "face1.jpg";
+        img1.src = "img/f0.jpg";
 
         var img2 = new Image();
         img2.onload = function(img) {
@@ -87,8 +95,18 @@
             var target = 'canvas2';
             var canvas = document.getElementById(target);
             loadImg(target, canvas, img);
-
-            var points = JSON.parse('[{"x":191,"y":228},{"x":217,"y":217},{"x":268,"y":233},{"x":335,"y":231},{"x":383,"y":222},{"x":410,"y":229},{"x":214,"y":258},{"x":240,"y":253},{"x":262,"y":258},{"x":340,"y":260},{"x":363,"y":253},{"x":390,"y":257},{"x":285,"y":339},{"x":322,"y":337},{"x":256,"y":379},{"x":302,"y":381},{"x":348,"y":379},{"x":270,"y":453},{"x":324,"y":454},{"x":160,"y":273},{"x":440,"y":274},{"x":242,"y":122},{"x":345,"y":121},{"x":190,"y":375},{"x":413,"y":373},{"x":221,"y":411},{"x":385,"y":411},{"x":106,"y":531},{"x":497,"y":534},{"x":200,"y":69},{"x":415,"y":69}]');
+            
+            var points = [];
+            var x, y;
+            for (var i=0; i<=16; i++) {
+                for (var j=0; j<4; j++) {
+                    x = i*canvas.width/16 + canvas.width/16;
+                    if (x>canvas.width) {x -= canvas.width;}
+                    y = Math.sin(x/canvas.width*Math.PI)*canvas.height*j/4 + canvas.height/2;
+                    points.push({"x":x,"y":y});
+                }
+            }
+            //var points = JSON.parse('[{"x":191,"y":228},{"x":217,"y":217},{"x":268,"y":233},{"x":335,"y":231},{"x":383,"y":222},{"x":410,"y":229},{"x":214,"y":258},{"x":240,"y":253},{"x":262,"y":258},{"x":340,"y":260},{"x":363,"y":253},{"x":390,"y":257},{"x":285,"y":339},{"x":322,"y":337},{"x":256,"y":379},{"x":302,"y":381},{"x":348,"y":379},{"x":270,"y":453},{"x":324,"y":454},{"x":160,"y":273},{"x":440,"y":274},{"x":242,"y":122},{"x":345,"y":121},{"x":190,"y":375},{"x":413,"y":373},{"x":221,"y":411},{"x":385,"y":411},{"x":106,"y":531},{"x":497,"y":534},{"x":200,"y":69},{"x":415,"y":69}]');
             for (var x = 0; x < points.length; x++) {
                 points[x] = new ImgWarper.Point(points[x].x, points[x].y);
             }
@@ -96,7 +114,7 @@
             warper[target].dstPoints = points;
             warper[target].redraw();
         };
-        img2.src = "face2.jpg";
+        img2.src = "img/f1.jpg";
 
         $("input.clear").click(function() {
             var target = $(this).attr('target');
