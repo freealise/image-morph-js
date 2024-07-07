@@ -48,7 +48,7 @@ inputElement_.addEventListener('change', (e) => {
 function findCorners() {
 try {
  // parameters for ShiTomasi corner detection
- let [maxCorners, qualityLevel, minDistance, blockSize] = [100, 0.03, 19, 19];
+ let [maxCorners, qualityLevel, minDistance, blockSize] = [100, 0.003, 31, 31];
 
  // parameters for lucas kanade optical flow
  let winSize = new cv.Size(15, 15);
