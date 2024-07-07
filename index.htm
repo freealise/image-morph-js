@@ -31,7 +31,7 @@ let oldGray, frameGray;
 inputElement.addEventListener('change', (e) => {
  imgElement.onload = function() {
   try {
-  oldFrame = cv.imread(imgElement);
+  oldFrame = cv.imread(imgElement, 0);
   } catch(e) {alert(e);}
  }
  imgElement.src = URL.createObjectURL(e.target.files[0]);
@@ -39,7 +39,7 @@ inputElement.addEventListener('change', (e) => {
 inputElement_.addEventListener('change', (e) => {
  imgElement_.onload = function() {
   try {
-  frame = cv.imread(imgElement_);
+  frame = cv.imread(imgElement_, 0);
   } catch(e) {alert(e);}
  }
  imgElement_.src = URL.createObjectURL(e.target.files[0]);
