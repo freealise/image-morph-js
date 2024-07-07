@@ -71,13 +71,6 @@ submitBtn.onclick = function() {
 
  function processImage() {
     try {
-        if (!streaming) {
-            // clean and stop.
-            frame.delete(); oldGray.delete(); p0.delete(); p1.delete(); err.delete(); mask.delete();
-            return;
-        }
-        let begin = Date.now();
-
         // start processing.
         cap.read(frame);
         cv.cvtColor(frame, frameGray, cv.COLOR_RGBA2GRAY);
