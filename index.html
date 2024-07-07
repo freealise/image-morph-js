@@ -74,6 +74,7 @@
             for (var i=0; i<=16; i++) {
                 for (var j=-3; j<4; j++) {
                     x = i*canvas.width/16;
+                    x -= canvas.width/16 * Math.sin(x/canvas.width*Math.PI*4);
                     y = Math.sin(x/canvas.width*Math.PI*2)*canvas.height*j/6 + canvas.height/2;
                     points.push({"x":x,"y":y});
                 }
@@ -101,6 +102,7 @@
             for (var i=0; i<=16; i++) {
                 for (var j=-3; j<4; j++) {
                     x = i*canvas.width/16 + canvas.width/16;
+                    x -= canvas.width/16 * Math.sin(x/canvas.width*Math.PI*4);
                     y = Math.sin(x/canvas.width*Math.PI*2)*canvas.height*j/6 + canvas.height/2;
                     points.push({"x":x,"y":y});
                 }
