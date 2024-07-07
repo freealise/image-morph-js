@@ -14,7 +14,7 @@
  <img id="imageSrc_" alt="No Image" />
  <div class="caption">imageSrc_ <input type="file" id="fileInput_" name="file" /></div>
  </div>
- <button id="submitBtn">corners</button>
+ <button onclick="findCorners();">corners</button>
  <div class="inputoutput">
  <canvas id="canvasOutput" ></canvas>
  <div class="caption">canvasOutput</div>
@@ -25,16 +25,23 @@ let imgElement = document.getElementById('imageSrc');
 let inputElement = document.getElementById('fileInput');
 let imgElement_ = document.getElementById('imageSrc_');
 let inputElement_ = document.getElementById('fileInput_');
-let submitBtn = document.getElementById('submitBtn');
+let oldFrame, frame;
 
 inputElement.addEventListener('change', (e) => {
+ imgElement.onload = function() {
+  oldFrame = cv.imread(imgElement);
+ }
  imgElement.src = URL.createObjectURL(e.target.files[0]);
 }, false);
 inputElement_.addEventListener('change', (e) => {
+ imgElement_.onload = function() {
+  frame = cv.imread(imgElement_);
+ }
  imgElement_.src = URL.createObjectURL(e.target.files[0]);
 }, false);
  
-submitBtn.onclick = function() {
+function findCorners() {
+try {
  // parameters for ShiTomasi corner detection
  let [maxCorners, qualityLevel, minDistance, blockSize] = [10, 0.3, 7, 7];
 
@@ -51,7 +58,6 @@ submitBtn.onclick = function() {
  }
 
  // take first frame and find corners in it
- let oldFrame = cv.imread(imgElement);
  cap.read(oldFrame);
  let oldGray = new cv.Mat();
  cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGB2GRAY);
@@ -63,17 +69,14 @@ submitBtn.onclick = function() {
  let zeroEle = new cv.Scalar(0, 0, 0, 255);
  let mask = new cv.Mat(oldFrame.rows, oldFrame.cols, oldFrame.type(), zeroEle);
 
- let frame = cv.imread(imgElement_);
  let frameGray = new cv.Mat();
  let p1 = new cv.Mat();
  let st = new cv.Mat();
  let err = new cv.Mat();
-
- function processImage() {
-    try {
+    
         // start processing.
         cap.read(frame);
-        cv.cvtColor(frame, frameGray, cv.COLOR_RGBA2GRAY);
+        cv.cvtColor(frame, frameGray, cv.COLOR_RGB2GRAY);
 
         // calculate optical flow
         cv.calcOpticalFlowPyrLK(oldGray, frameGray, p0, p1, st, err, winSize, maxLevel, criteria);
@@ -96,22 +99,10 @@ submitBtn.onclick = function() {
         cv.add(frame, mask, frame);
 
         cv.imshow('canvasOutput', frame);
-
-        // now update the previous frame and previous points
-        frameGray.copyTo(oldGray);
-        p0.delete(); p0 = null;
-        p0 = new cv.Mat(goodNew.length, 1, cv.CV_32FC2);
-        for (let i = 0; i < goodNew.length; i++) {
-            p0.data32F[i*2] = goodNew[i].x;
-            p0.data32F[i*2+1] = goodNew[i].y;
-        }
-    } catch (err) {
-        alert(err);
-    }
- };
- processImage();
-
-};
+} catch (err) {
+    alert(err);
+}
+}
  
 var Module = {
  // https://emscripten.org/docs/api_reference/module.html#Module.onRuntimeInitialized
