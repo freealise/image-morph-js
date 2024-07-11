@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hello OpenCV.js</title>
+</head>
+<body>
+<h2>Hello OpenCV.js</h2>
+<p id="status">OpenCV.js is loading...</p>
+<div>
+ <div class="inputoutput">
+ <img id="imageSrc" alt="No Image" />
+ <div class="caption">imageSrc <input type="file" id="fileInput" name="file" /></div>
+ <img id="imageSrc_" alt="No Image" />
+ <div class="caption">imageSrc_ <input type="file" id="fileInput_" name="file" /></div>
+ </div>
+ <button onclick="findCorners();">corners</button>
+ <div class="inputoutput">
+ <canvas id="canvasOutput" ></canvas>
+ <div class="caption">canvasOutput</div>
+ </div>
+</div>
+<script type="text/javascript">
+let imgElement = document.getElementById('imageSrc');
+let inputElement = document.getElementById('fileInput');
+let imgElement_ = document.getElementById('imageSrc_');
+let inputElement_ = document.getElementById('fileInput_');
+let oldFrame, frame;
+let oldGray, frameGray;
+
+inputElement.addEventListener('change', (e) => {
+ imgElement.onload = function() {
+  try {
+  oldFrame = cv.imread(imgElement);
+  } catch(e) {alert(e);}
+ }
+ imgElement.src = URL.createObjectURL(e.target.files[0]);
+}, false);
+inputElement_.addEventListener('change', (e) => {
+ imgElement_.onload = function() {
+  try {
+  frame = cv.imread(imgElement_);
+  } catch(e) {alert(e);}
+ }
+ imgElement_.src = URL.createObjectURL(e.target.files[0]);
+}, false);
+ 
+function findCorners() {
+try {
+ // parameters for ShiTomasi corner detection
+ let [maxCorners, qualityLevel, minDistance, blockSize] = [1000, 0.001, 19, 19];
+
+ // parameters for lucas kanade optical flow
+ let winSize = new cv.Size(31, 31);
+ let maxLevel = 2;
+ let criteria = new cv.TermCriteria(cv.TERM_CRITERIA_EPS | cv.TERM_CRITERIA_COUNT, 10, 0.03);
+
+ // create some random colors
+ let color = [];
+ for (let i = 0; i < maxCorners; i++) {
+    color.push(new cv.Scalar(parseInt(Math.random()*255), parseInt(Math.random()*255),
+                             parseInt(Math.random()*255), 255));
+ }
+
+ // take first frame and find corners in it
+ //cap.read(oldFrame);
+ oldGray = new cv.Mat();
+ cv.cvtColor(oldFrame, oldGray, cv.COLOR_RGB2GRAY);
+ let p0 = new cv.Mat();
+ let none = new cv.Mat();
+ cv.goodFeaturesToTrack(oldGray, p0, maxCorners, qualityLevel, minDistance, none, blockSize);
+
+ // Create a mask image for drawing purposes
+ let zeroEle = new cv.Scalar(0, 0, 0, 255);
+ let mask = new cv.Mat(oldFrame.rows, oldFrame.cols, oldFrame.type(), zeroEle);
+
+ let p1 = new cv.Mat();
+ let st = new cv.Mat();
+ let err = new cv.Mat();
+    
+        // start processing.
+        frameGray = new cv.Mat();
+        cv.cvtColor(frame, frameGray, cv.COLOR_RGB2GRAY);
+
+        // calculate optical flow
+        cv.calcOpticalFlowPyrLK(oldGray, frameGray, p0, p1, st, err, winSize, maxLevel, criteria);
+
+        // select good points
+        let goodNew = [];
+        let goodOld = [];
+        for (let i = 0; i < st.rows; i++) {
+            if (st.data[i] === 1) {
+                goodNew.push(new cv.Point(p1.data32F[i*2], p1.data32F[i*2+1]));
+                goodOld.push(new cv.Point(p0.data32F[i*2], p0.data32F[i*2+1]));
+            }
+        }
+
+        // draw the tracks
+        for (let i = 0; i < goodOld.length; i++) {
+            cv.line(mask, goodNew[i], goodOld[i], color[i], 2);
+            cv.circle(frame, goodOld[i], 5, color[i], -1);
+        }
+        cv.add(frame, mask, frame);
+
+        cv.imshow('canvasOutput', frame);
+} catch (err) {
+    alert(err);
+}
+}
+ 
+var Module = {
+ // https://emscripten.org/docs/api_reference/module.html#Module.onRuntimeInitialized
+ onRuntimeInitialized() {
+ document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+ }
+};
+</script>
+<script async src="opencv.js" type="text/javascript"></script>
+</body>
+</html>
