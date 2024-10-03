@@ -407,14 +407,10 @@ ImgWarper.Animator.prototype.generate = function(frames) {
 
     // transform both images
     var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-    if (document.getElementById('blend').checked) {
-      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-      // blend images
-      var res = this.blendImages(img1, img2, x, steps.length);
-    } else {
-      var res = img1;
-    }
+    // blend images
+    var res = this.blendImages(img1, img2, x, steps.length);
 
     // draw frame
     this.frames.push(res);
@@ -439,8 +435,14 @@ ImgWarper.Animator.prototype.calculatePositions = function(f) {
 
 ImgWarper.Animator.prototype.blendImages = function(img1, img2, step, steps) {
   var res = document.createElement("canvas").getContext('2d').createImageData(img1.width, img1.height)
-  for (var x = 0; x < img1.data.length; x++) {
-    res.data[x] = img1.data[x] + (img2.data[x]-img1.data[x])*step/steps;
+  if (document.getElementById('blend').checked) {
+    for (var x = 0; x < img1.data.length; x++) {
+      res.data[x] = img1.data[x] + (img2.data[x]-img1.data[x])*step/steps;
+    }
+  } else {
+    for (var x = 0; x < img1.data.length; x++) {
+      res.data[x] = img1.data[x];
+    }
   }
   return res;
 };
