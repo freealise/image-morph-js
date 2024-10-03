@@ -407,10 +407,14 @@ ImgWarper.Animator.prototype.generate = function(frames) {
 
     // transform both images
     var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+    if (document.getElementById('blend').checked) {
+      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-    // blend images
-    var res = this.blendImages(img1, img2, x, steps.length);
+      // blend images
+      var res = this.blendImages(img1, img2, x, steps.length);
+    } else {
+      var res = img1;
+    }
 
     // draw frame
     this.frames.push(res);
