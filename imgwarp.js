@@ -337,14 +337,14 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   } else {
     if (pointIndex < 0) {
       this.oriPoints.push(q);
-      //this.dstPoints.push(q);
+      //this.dstPoints.push(q); //is the same array
       this.currentPointIndex = this.getCurrentPointIndex(q);
     } else {
       this.currentPointIndex = pointIndex;
     }
   }
   this.redraw();
-  alert(this.oriPoints.length);
+  //alert(this.oriPoints.length);
 };
 
 ImgWarper.PointDefiner.prototype.getCurrentPointIndex = function(q) {
