@@ -284,9 +284,9 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
   this.image = image;
   this.imgData = imgData;
   $(c).unbind();
-  $(c).bind('mousedown', function (e) { that.touchStart(e); });
-  $(c).bind('mousemove', function (e) { that.touchDrag(e); });
-  $(c).bind('mouseup', function (e) { that.touchEnd(e); });
+  $(c).bind('pointerdown', function (e) { that.touchStart(e); });
+  $(c).bind('pointermove', function (e) { that.touchDrag(e); });
+  $(c).bind('pointerup', function (e) { that.touchEnd(e); });
   this.currentPointIndex = -1;
   //this.imgWarper = new ImgWarper.Warper(imgData);
 };
