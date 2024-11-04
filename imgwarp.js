@@ -412,7 +412,7 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
     txt = '0' + txt;
   }
   ctx.font = "8px monospace";
-  ctx.fillText("\u"+txt, parseInt(point.x), parseInt(point.y));
+  ctx.fillText("\\u"+txt, parseInt(point.x), parseInt(point.y));
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
