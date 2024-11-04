@@ -321,10 +321,10 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
 
-  movedPoint = new ImgWarper.Point(endX, endY);
+  /*movedPoint = new ImgWarper.Point(endX, endY);
   this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
 
-  this.redraw();
+  this.redraw();*/
   this.computing_ = false;
 };
 
@@ -394,7 +394,7 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
 };
 
 ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
-  var radius = 16;
+  var radius = 12;
   ctx.beginPath();
   ctx.lineWidth = 3;
   ctx.arc(parseInt(point.x), parseInt(point.y), radius, 0, 2 * Math.PI, false);
@@ -407,8 +407,8 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   ctx.fillStyle = color;
   ctx.fill();
   
-  ctx.font = "8px monospace";
-  ctx.fillText(String.fromCharCode(n), parseInt(point.x), parseInt(point.y));
+  ctx.font = "8px bold monospace";
+  ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+4);
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
