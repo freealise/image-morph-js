@@ -306,6 +306,7 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
 
   movedPoint = new ImgWarper.Point(endX, endY);
+  this.oriPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
   this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
 
   this.redraw();
@@ -365,16 +366,15 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       } else {
         this.drawOnePoint(this.dstPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
       }
-    } else {
-      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)', i);
-    }
-    if (i>0) {
       ctx.beginPath();
       ctx.lineWidth = 3;
-      ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
-      ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
+      ctx.moveTo(this.oriPoints[i].x, this.oriPoints[i].y);
+      ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
       //ctx.strokeStyle = '#691C50';
       ctx.stroke();
+      
+    } else {
+      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)', i);
     }
   }
   ctx.stroke();
@@ -383,19 +383,30 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
 ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   var radius = 12;
   ctx.beginPath();
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 1;
   ctx.arc(parseInt(point.x), parseInt(point.y), radius, 0, 2 * Math.PI, false);
   ctx.strokeStyle = color;
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.lineWidth = 1;
+  //ctx.lineWidth = 1;
   ctx.arc(parseInt(point.x), parseInt(point.y), 3, 0, 2 * Math.PI, false);
   ctx.fillStyle = color;
   ctx.fill();
   
-  ctx.font = "12px Courier bold";
-  ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+3);
+  ctx.font = "12px Courier";
+  ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+4);
+  
+  if (i>0) {
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
+    ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
+    ctx.moveTo(this.dstPoints[i-1].x, this.dstPoints[i-1].y);
+    ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
+    //ctx.strokeStyle = '#691C50';
+    ctx.stroke();
+  }
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
