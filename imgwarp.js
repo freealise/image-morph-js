@@ -389,8 +389,8 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       ctx.lineWidth = 1;
       ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
       ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
-      ctx.moveTo(this.dstPoints[i-1].x, this.dstPoints[i-1].y);
-      ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
+      //ctx.moveTo(this.dstPoints[i-1].x, this.dstPoints[i-1].y);
+      //ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
       //ctx.strokeStyle = '#691C50';
       ctx.stroke();
     }
