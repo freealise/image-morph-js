@@ -305,9 +305,9 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
 
-  //movedPoint = new ImgWarper.Point(endX, endY);
-  this.oriPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
-  this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
+  movedPoint = new ImgWarper.Point(endX, endY);
+  this.oriPoints[this.currentPointIndex] = movedPoint;
+  this.dstPoints[this.currentPointIndex] = movedPoint;
 
   this.redraw();
   this.computing_ = false;
@@ -331,13 +331,13 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   if (document.getElementById('erase').checked || e.shiftKey) {
     if (pointIndex >= 0) {
       this.oriPoints.splice(pointIndex, 1);
-      this.dstPoints.splice(pointIndex, 1);
+      //this.dstPoints.splice(pointIndex, 1);
     }
     this.currentPointIndex = -1;
   } else {
     if (pointIndex < 0) {
       this.oriPoints.push(q);
-      //this.dstPoints.push(q); //is the same array
+      //this.dstPoints.push(q);
       this.currentPointIndex = this.getCurrentPointIndex(q);
     } else {
       this.currentPointIndex = pointIndex;
