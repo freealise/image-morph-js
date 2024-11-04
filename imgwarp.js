@@ -409,7 +409,7 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   ctx.fillStyle = color;
   ctx.fill();
   
-  ctx.font = "12px Courier";
+  ctx.font = "bold 12px Courier";
   ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+4);
 };
 
