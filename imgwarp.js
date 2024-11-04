@@ -375,9 +375,9 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
   for (var i = 0; i < this.oriPoints.length; i++){
     if (i < this.dstPoints.length) {
       if (i == this.currentPointIndex) {
-        this.drawOnePoint(this.dstPoints[i], ctx, 'orange');
+        this.drawOnePoint(this.dstPoints[i], ctx, 'orange', i);
       } else {
-        this.drawOnePoint(this.dstPoints[i], ctx, '#6373CF');
+        this.drawOnePoint(this.dstPoints[i], ctx, '#6373CF', i);
       }
 
       ctx.beginPath();
@@ -387,13 +387,13 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       //ctx.strokeStyle = '#691C50';
       ctx.stroke();
     } else {
-      this.drawOnePoint(this.oriPoints[i], ctx, '#119a21');
+      this.drawOnePoint(this.oriPoints[i], ctx, '#119a21', i);
     }
   }
   ctx.stroke();
 };
 
-ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color) {
+ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   var radius = 10;
   ctx.beginPath();
   ctx.lineWidth = 3;
@@ -406,6 +406,13 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color) {
   ctx.arc(parseInt(point.x), parseInt(point.y), 3, 0, 2 * Math.PI, false);
   ctx.fillStyle = color;
   ctx.fill();
+  
+  var txt = n.toString(16);
+  while (txt.length < 4) {
+    txt = '0' + txt;
+  }
+  ctx.font = "8px monospace";
+  ctx.fillText("\u"+txt, point.x, point.y);
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
