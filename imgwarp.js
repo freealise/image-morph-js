@@ -297,16 +297,18 @@ ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
   var q = new ImgWarper.Point(endX, endY);
 
+  var pointIndex = this.getCurrentPointIndex(q);
   if (e.shiftKey) {
-    var pointIndex = this.getCurrentPointIndex(q);
     if (pointIndex >= 0) {
       this.oriPoints.splice(pointIndex, 1);
       this.dstPoints.splice(pointIndex, 1);
     }
   } else {
-    this.oriPoints.push(q);
-    this.dstPoints.push(q);
-    this.currentPointIndex = this.getCurrentPointIndex(q);
+    if (pointIndex < 0) {
+      this.oriPoints.push(q);
+      this.dstPoints.push(q);
+      this.currentPointIndex = this.getCurrentPointIndex(q);
+    }
   }
   this.dragging_ = false;
   this.redraw();
@@ -341,17 +343,19 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   var startX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var startY = (e.offsetY || e.clientY - $(e.target).offset().top);
   var q = new ImgWarper.Point(startX, startY);
-
+ 
+  var pointIndex = this.getCurrentPointIndex(q);
   if (e.shiftKey) {
-    var pointIndex = this.getCurrentPointIndex(q);
     if (pointIndex >= 0) {
       this.oriPoints.splice(pointIndex, 1);
       this.dstPoints.splice(pointIndex, 1);
     }
   } else {
-    this.oriPoints.push(q);
-    this.dstPoints.push(q);
-    this.currentPointIndex = this.getCurrentPointIndex(q);
+    if (pointIndex < 0) {
+      this.oriPoints.push(q);
+      this.dstPoints.push(q);
+      this.currentPointIndex = this.getCurrentPointIndex(q);
+    }
   }
   this.redraw();
 };
@@ -407,7 +411,7 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   ctx.fillStyle = color;
   ctx.fill();
   
-  ctx.font = "12px bold monospace";
+  ctx.font = "12px Courier bold";
   ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+3);
 };
 
