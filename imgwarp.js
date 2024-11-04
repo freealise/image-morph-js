@@ -337,7 +337,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   } else {
     if (pointIndex < 0) {
       this.oriPoints.push(q);
-      this.dstPoints.push(q);
+      //this.dstPoints.push(q);
       this.currentPointIndex = this.getCurrentPointIndex(q);
     } else {
       this.currentPointIndex = pointIndex;
