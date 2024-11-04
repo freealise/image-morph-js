@@ -362,14 +362,14 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
   ctx.putImageData(this.imgData, 0, 0);
   for (var i = 0; i < this.oriPoints.length; i++){
     if (i < this.dstPoints.length) {
-      var color = 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)';
-      ctx.strokeStyle = color;
+      var color = 'hsl('+(i/this.dstPoints.length*360)+',100%,50%)';
       if (i == this.currentPointIndex) {
         this.drawOnePoint(this.dstPoints[i], ctx, '#808080', i);
       } else {
         this.drawOnePoint(this.dstPoints[i], ctx, color, i);
       }
       ctx.beginPath();
+      ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.moveTo(this.oriPoints[i].x, this.oriPoints[i].y);
       ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
@@ -377,12 +377,12 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       ctx.stroke();
       
     } else {
-      var color = 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)';
-      ctx.strokeStyle = color;
+      var color = 'hsl('+(i/this.oriPoints.length*360)+',100%,50%)';
       this.drawOnePoint(this.oriPoints[i], ctx, color, i);
     }
     if (i>0) {
       ctx.beginPath();
+      ctx.strokeStyle = color;
       ctx.lineWidth = 1;
       ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
       ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
