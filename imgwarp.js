@@ -293,25 +293,7 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
 
 ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
   e.preventDefault();
-  var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
-  var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
-  var q = new ImgWarper.Point(endX, endY);
-
-  var pointIndex = this.getCurrentPointIndex(q);
-  if (e.shiftKey) {
-    if (pointIndex >= 0) {
-      this.oriPoints.splice(pointIndex, 1);
-      this.dstPoints.splice(pointIndex, 1);
-    }
-  } else {
-    if (pointIndex < 0) {
-      this.oriPoints.push(q);
-      this.dstPoints.push(q);
-      this.currentPointIndex = this.getCurrentPointIndex(q);
-    }
-  }
   this.dragging_ = false;
-  this.redraw();
 }
 
 ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
@@ -383,15 +365,16 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       } else {
         this.drawOnePoint(this.dstPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
       }
-
+    } else {
+      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)', i);
+    }
+    if (i>0) {
       ctx.beginPath();
       ctx.lineWidth = 3;
-      ctx.moveTo(this.oriPoints[i].x, this.oriPoints[i].y);
-      ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
+      ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
+      ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
       //ctx.strokeStyle = '#691C50';
       ctx.stroke();
-    } else {
-      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
     }
   }
   ctx.stroke();
