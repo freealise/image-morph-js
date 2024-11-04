@@ -328,7 +328,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   var q = new ImgWarper.Point(startX, startY);
  
   var pointIndex = this.getCurrentPointIndex(q);
-  if (e.shiftKey) {
+  if (document.getElementById('erase').checked || e.shiftKey) {
     if (pointIndex >= 0) {
       this.oriPoints.splice(pointIndex, 1);
       this.dstPoints.splice(pointIndex, 1);
@@ -362,10 +362,12 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
   ctx.putImageData(this.imgData, 0, 0);
   for (var i = 0; i < this.oriPoints.length; i++){
     if (i < this.dstPoints.length) {
+      var color = 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)';
+      ctx.strokeStyle = color;
       if (i == this.currentPointIndex) {
         this.drawOnePoint(this.dstPoints[i], ctx, '#808080', i);
       } else {
-        this.drawOnePoint(this.dstPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
+        this.drawOnePoint(this.dstPoints[i], ctx, color, i);
       }
       ctx.beginPath();
       ctx.lineWidth = 3;
@@ -375,7 +377,9 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       ctx.stroke();
       
     } else {
-      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)', i);
+      var color = 'hsl('+(i/this.oriPoints.length*180)+',100%,50%)';
+      ctx.strokeStyle = color;
+      this.drawOnePoint(this.oriPoints[i], ctx, color, i);
     }
     if (i>0) {
       ctx.beginPath();
