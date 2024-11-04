@@ -291,8 +291,7 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
   //this.imgWarper = new ImgWarper.Warper(imgData);
 };
 
-ImgWarper.PointDefiner.prototype.touchEnd = function(event) {
-  this.dragging_ = false;
+ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
   e.preventDefault();
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
@@ -309,6 +308,7 @@ ImgWarper.PointDefiner.prototype.touchEnd = function(event) {
     this.dstPoints.push(q);
     this.currentPointIndex = this.getCurrentPointIndex(q);
   }
+  this.dragging_ = false;
   this.redraw();
 }
 
@@ -321,10 +321,10 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
 
-  /*movedPoint = new ImgWarper.Point(endX, endY);
+  movedPoint = new ImgWarper.Point(endX, endY);
   this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
 
-  this.redraw();*/
+  this.redraw();
   this.computing_ = false;
 };
 
@@ -360,7 +360,7 @@ ImgWarper.PointDefiner.prototype.getCurrentPointIndex = function(q) {
   var currentPoint = -1;
 
   for (var i = 0 ; i< this.dstPoints.length; i++){
-    if (this.dstPoints[i].InfintyNormDistanceTo(q) <= 20) {
+    if (this.dstPoints[i].InfintyNormDistanceTo(q) <= 32) {
       currentPoint = i;
       return i;
     }
@@ -407,8 +407,8 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   ctx.fillStyle = color;
   ctx.fill();
   
-  ctx.font = "8px bold monospace";
-  ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+4);
+  ctx.font = "12px bold monospace";
+  ctx.fillText(n, parseInt(point.x)+4, parseInt(point.y)+3);
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
