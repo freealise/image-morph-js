@@ -324,7 +324,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   var startY = (e.offsetY || e.clientY - $(e.target).offset().top);
   var q = new ImgWarper.Point(startX, startY);
 
-   if (e.shiftKey) {
+  if (e.shiftKey) {
     var pointIndex = this.getCurrentPointIndex(q);
     if (pointIndex >= 0) {
       this.oriPoints.splice(pointIndex, 1);
@@ -333,7 +333,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
   } else {
     this.oriPoints.push(q);
     this.dstPoints.push(q);
-    //this.currentPointIndex = this.getCurrentPointIndex(q);
+    this.currentPointIndex = this.getCurrentPointIndex(q);
   }
   this.redraw();
 };
