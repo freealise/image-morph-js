@@ -1,7 +1,4 @@
 var ImgWarper = ImgWarper || {};
-var canvasId = null;
-var strokePoints1 = 0;
-var strokePoints2 = 0;
 
 ImgWarper.Warper = function(
   imgData, optGridSize, optAlpha) {
@@ -296,20 +293,9 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
 
 ImgWarper.PointDefiner.prototype.touchEnd = function(event) {
   this.dragging_ = false;
-}
-
-ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
-  if (this.computing_ || !this.dragging_ /*|| this.currentPointIndex < 0*/) {
-    return;
-  }
-  this.computing_ = true;
   e.preventDefault();
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
-
-  /*movedPoint = new ImgWarper.Point(endX, endY);
-  this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);*/
-
   var q = new ImgWarper.Point(endX, endY);
 
   if (e.shiftKey) {
@@ -319,26 +305,24 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
       this.dstPoints.splice(pointIndex, 1);
     }
   } else {
-    if (canvasId == e.target.id || canvasId == null) {
-      if (e.target.id == 'canvas1') {
-        strokePoints1++;
-      } else {
-        strokePoints2++;
-      }
-    } else {
-      if (e.target.id == 'canvas1' && strokePoints1 < strokePoints2) {
-        strokePoints1++;
-      } else if (e.target.id == 'canvas2' && strokePoints2 < strokePoints1) {
-        strokePoints2++;
-      } else {
-        this.computing_ = false;
-        return;
-      }
-    }
     this.oriPoints.push(q);
     this.dstPoints.push(q);
     this.currentPointIndex = this.getCurrentPointIndex(q);
   }
+  this.redraw();
+}
+
+ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
+  if (this.computing_ || !this.dragging_ || this.currentPointIndex < 0) {
+    return;
+  }
+  this.computing_ = true;
+  e.preventDefault();
+  var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
+  var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
+
+  movedPoint = new ImgWarper.Point(endX, endY);
+  this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
 
   this.redraw();
   this.computing_ = false;
@@ -352,12 +336,11 @@ ImgWarper.PointDefiner.prototype.redraw = function () {
 
 
 ImgWarper.PointDefiner.prototype.touchStart = function(e) {
-  canvasId = e.target.id;
   this.dragging_ = true;
   e.preventDefault();
   var startX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var startY = (e.offsetY || e.clientY - $(e.target).offset().top);
-  /*var q = new ImgWarper.Point(startX, startY);
+  var q = new ImgWarper.Point(startX, startY);
 
   if (e.shiftKey) {
     var pointIndex = this.getCurrentPointIndex(q);
@@ -370,7 +353,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
     this.dstPoints.push(q);
     this.currentPointIndex = this.getCurrentPointIndex(q);
   }
-  this.redraw();*/
+  this.redraw();
 };
 
 ImgWarper.PointDefiner.prototype.getCurrentPointIndex = function(q) {
