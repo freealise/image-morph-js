@@ -297,7 +297,7 @@ ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
 }
 
 ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
-  if (this.computing_ || !this.dragging_ || this.currentPointIndex < 0) {
+  if (this.computing_ || !this.dragging_ || this.currentPointIndex < 0 || this.currentPointIndex >= this.oriPoints.length) {
     return;
   }
   this.computing_ = true;
@@ -305,7 +305,7 @@ ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
   var endX = (e.offsetX || e.clientX - $(e.target).offset().left);
   var endY = (e.offsetY || e.clientY - $(e.target).offset().top);
 
-  movedPoint = new ImgWarper.Point(endX, endY);
+  //movedPoint = new ImgWarper.Point(endX, endY);
   this.oriPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
   this.dstPoints[this.currentPointIndex] = new ImgWarper.Point(endX, endY);
 
@@ -344,6 +344,7 @@ ImgWarper.PointDefiner.prototype.touchStart = function(e) {
     }
   }
   this.redraw();
+  alert(this.oriPoints.length);
 };
 
 ImgWarper.PointDefiner.prototype.getCurrentPointIndex = function(q) {
