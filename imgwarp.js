@@ -375,9 +375,9 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
   for (var i = 0; i < this.oriPoints.length; i++){
     if (i < this.dstPoints.length) {
       if (i == this.currentPointIndex) {
-        this.drawOnePoint(this.dstPoints[i], ctx, 'orange', i);
+        this.drawOnePoint(this.dstPoints[i], ctx, '#808080', i);
       } else {
-        this.drawOnePoint(this.dstPoints[i], ctx, '#6373CF', i);
+        this.drawOnePoint(this.dstPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
       }
 
       ctx.beginPath();
@@ -387,14 +387,14 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       //ctx.strokeStyle = '#691C50';
       ctx.stroke();
     } else {
-      this.drawOnePoint(this.oriPoints[i], ctx, '#119a21', i);
+      this.drawOnePoint(this.oriPoints[i], ctx, 'hsl('+(i/this.dstPoints.length*180)+',100%,50%)', i);
     }
   }
   ctx.stroke();
 };
 
 ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
-  var radius = 10;
+  var radius = 16;
   ctx.beginPath();
   ctx.lineWidth = 3;
   ctx.arc(parseInt(point.x), parseInt(point.y), radius, 0, 2 * Math.PI, false);
@@ -407,12 +407,8 @@ ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
   ctx.fillStyle = color;
   ctx.fill();
   
-  var txt = n.toString(16);
-  while (txt.length < 4) {
-    txt = '0' + txt;
-  }
   ctx.font = "8px monospace";
-  ctx.fillText("\u{"+txt+"}", parseInt(point.x), parseInt(point.y));
+  ctx.fillText(String.fromCharCode(n), parseInt(point.x), parseInt(point.y));
 };
 
 ImgWarper.Animator = function(pdef1, pdef2) {
