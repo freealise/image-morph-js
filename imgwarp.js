@@ -258,8 +258,12 @@ ImgWarper.Point.weightedAverage = function (p, w) {
     sy += p[i].y * w[i];
     sw += w[i];
   }
-  var pt = new ImgWarper.Point(sx / sw, sy / sw);
-  if (!pt.x) {alert('sw '+JSON.stringify(sx+' '+sy+' '+sw));}
+  if (sw == 0 || sw === Infinity) {
+    var pt = new ImgWarper.Point(0, 0);
+  } else {
+    var pt = new ImgWarper.Point(sx / sw, sy / sw);
+  }
+  if (!pt.x) {alert('sw '+(sx+' '+sy+' '+sw));}
   return pt;
 };
 
