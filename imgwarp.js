@@ -388,19 +388,7 @@ ImgWarper.PointDefiner.prototype.redrawCanvas = function(points) {
       var color = 'hsl('+(i/this.oriPoints.length*360)+',100%,50%)';
       this.drawOnePoint(this.oriPoints[i], ctx, color, i);
     }
-    if (i>0) {
-      ctx.beginPath();
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
-      ctx.moveTo(this.oriPoints[i-1].x, this.oriPoints[i-1].y);
-      ctx.lineTo(this.oriPoints[i].x, this.oriPoints[i].y);
-      //ctx.moveTo(this.dstPoints[i-1].x, this.dstPoints[i-1].y);
-      //ctx.lineTo(this.dstPoints[i].x, this.dstPoints[i].y);
-      //ctx.strokeStyle = '#691C50';
-      ctx.stroke();
-    }
   }
-  ctx.stroke();
 };
 
 ImgWarper.PointDefiner.prototype.drawOnePoint = function(point, ctx, color, n) {
