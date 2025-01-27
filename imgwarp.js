@@ -2,7 +2,7 @@ var ImgWarper = ImgWarper || {};
 
 ImgWarper.Warper = function(
   imgData, optGridSize, optAlpha) {
-  this.alpha = optAlpha || 1;
+  this.alpha = optAlpha || 2;
   this.gridSize = optGridSize || 20;
 
   this.width = imgData.width;
@@ -254,14 +254,13 @@ ImgWarper.Point.weightedAverage = function (p, w) {
       sw = 0;
 
   for (i = 0; i < p.length; i++) {
-    w[i] = parseFloat(0.0+w[i]/1000000);
     sx += p[i].x * w[i];
     sy += p[i].y * w[i];
     sw += w[i];
   }
   
   var pt = new ImgWarper.Point(sx / sw, sy / sw);
-  if (!pt.x) {alert('sw '+(sx+' '+sy+' '+sw));}
+  if (!pt.x) {alert(sx+', '+sy+', '+sw);}
   return pt;
 };
 
