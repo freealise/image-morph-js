@@ -158,7 +158,6 @@ ImgWarper.BilinearInterpolation.prototype.fill =
             continue;
           }
           try{
-          if (!this.imgData[base + 3] || this.imgData[base + 3] == 0) {alert('!')}
           var srcX1 = Math.floor(srcX);
           var srcY1 = Math.floor(srcY);
           var base = ((srcY1 * this.width) + srcX1) * 4;
@@ -167,6 +166,7 @@ ImgWarper.BilinearInterpolation.prototype.fill =
           this.imgTargetData.data[index + 1] = this.imgData[base + 1];
           this.imgTargetData.data[index + 2] = this.imgData[base + 2];
           this.imgTargetData.data[index + 3] = this.imgData[base + 3];
+          if (!this.imgData[base + 3]) {alert('no data')} else if (this.imgData[base + 3] == 0) {alert('zero opacity')}
           }catch(e){alert(e)}
         }
       }
