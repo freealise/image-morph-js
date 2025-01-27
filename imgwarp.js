@@ -75,12 +75,10 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
   for (var i = 0; i < this.n; ++i) {
     var t = this.fromPoints[i].subtract(point);
     this.w[i] = Math.pow(t.x * t.x + t.y * t.y, -this.alpha);
-    alert((t.x * t.x + t.y * t.y) + ' ' + this.w[i]);
   }
   
   var pAverage = ImgWarper.Point.weightedAverage(this.fromPoints, this.w);
   var qAverage = ImgWarper.Point.weightedAverage(this.toPoints, this.w);
-  if (!qAverage.x) {alert(JSON.stringify(this.w));}
 
   for (var i = 0; i < this.n; ++i) {
     this.pRelative[i] = this.fromPoints[i].subtract(pAverage);
@@ -256,11 +254,14 @@ ImgWarper.Point.weightedAverage = function (p, w) {
       sw = 0;
 
   for (i = 0; i < p.length; i++) {
+    w[i] = parseFloat(0.0 + w[i]);
     sx += p[i].x * w[i];
     sy += p[i].y * w[i];
     sw += w[i];
   }
-  return new ImgWarper.Point(sx / sw, sy / sw);
+  var pt = new ImgWarper.Point(sx / sw, sy / sw);
+  if (!pt.x) {alert('w '+JSON.stringify(w));}
+  return pt;
 };
 
 ImgWarper.Point.prototype.InfintyNormDistanceTo = function (o) {
