@@ -98,10 +98,10 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
   }
 
   var r = qAverage; //r is an point 
+  if (!r.x) {alert('qaverage '+JSON.stringify(r));}
   for (var j = 0; j < this.n; ++j) {
     r = r.add(this.qRelative[j].multiply_d(this.A[j]));
   }
-  if (!r.x) {alert('r '+JSON.stringify(r));}
   return r;
 };
 
