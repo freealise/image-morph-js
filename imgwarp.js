@@ -433,18 +433,34 @@ ImgWarper.Animator.prototype.generate = function(frames) {
   var warper1 = new ImgWarper.Warper(this.pointDefiner1.imgData);
   var warper2 = new ImgWarper.Warper(this.pointDefiner2.imgData);
 
-  for (var x = 0; x < steps.length; x++) {
-    var step = steps[x];
+  if (document.getElementById('animate').checked) {
+    for (var x = 0; x < steps.length; x++) {
+      var step = steps[x];
 
-    // transform both images
-    var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+      // transform both images
+      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
+      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-    // blend images
-    var res = this.blendImages(img1, img2, x, steps.length);
+      // blend images
+      var res = this.blendImages(img1, img2, x, steps.length);
 
-    // draw frame
-    this.frames.push(res);
+      // draw frame
+      this.frames.push(res);
+    }
+  } else {
+    for (var x = 0; x < steps.length; x+=parseInt(steps/2)) {
+      var step = steps[x];
+
+      // transform both images
+      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
+      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+
+      // blend images
+      var res = this.blendImages(img1, img2, x, steps.length);
+
+      // draw frame
+      this.frames.push(res);
+    }
   }
 };
 
@@ -467,24 +483,12 @@ ImgWarper.Animator.prototype.calculatePositions = function(f) {
 ImgWarper.Animator.prototype.blendImages = function(img1, img2, step, steps) {
   var res = document.createElement("canvas").getContext('2d').createImageData(img1.width, img1.height)
   if (document.getElementById('blend').checked) {
-    if (!document.getElementById('animate').checked) {
-      for (var x = 0; x < img1.data.length; x=x+parseInt(img1.data.length/2)) {
-        res.data[x] = img1.data[x] + (img2.data[x]-img1.data[x])*step/steps;
-      }
-    } else {
-      for (var x = 0; x < img1.data.length; x++) {
-        res.data[x] = img1.data[x] + (img2.data[x]-img1.data[x])*step/steps;
-      }
+    for (var x = 0; x < img1.data.length; x++) {
+      res.data[x] = img1.data[x] + (img2.data[x]-img1.data[x])*step/steps;
     }
   } else {
-    if (!document.getElementById('animate').checked) {
-      for (var x = 0; x < img1.data.length; x=x+parseInt(img1.data.length/2)) {
-        res.data[x] = img1.data[x];
-      }
-    } else {
-      for (var x = 0; x < img1.data.length; x++) {
-        res.data[x] = img1.data[x];
-      }
+    for (var x = 0; x < img1.data.length; x++) {
+      res.data[x] = img1.data[x];
     }
   }
   return res;
