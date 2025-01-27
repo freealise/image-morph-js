@@ -166,7 +166,7 @@ ImgWarper.BilinearInterpolation.prototype.fill =
           this.imgTargetData.data[index + 1] = this.imgData[base + 1];
           this.imgTargetData.data[index + 2] = this.imgData[base + 2];
           this.imgTargetData.data[index + 3] = this.imgData[base + 3];
-          if (!this.imgData[base + 3]) {alert(x1 + ' ' + x0 + ' ' + this.imgData[base + 3])}
+          if (!this.imgData[base + 3]) {alert(xr + ' ' + xl + ' ' + sourcePoints[3].x + ' ' + sourcePoints[3].y + ' ' + sourcePoints[2].x + ' ' + sourcePoints[2].y + ' ' + this.imgData[base + 3])}
           }catch(e){alert(e)}
         }
       }
