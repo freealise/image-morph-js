@@ -79,6 +79,7 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
 
   var pAverage = ImgWarper.Point.weightedAverage(this.fromPoints, this.w);
   var qAverage = ImgWarper.Point.weightedAverage(this.toPoints, this.w);
+  if (!qAverage.x) {alert('q '+JSON.stringify(this.toPoints)+' '+JSON.stringify(this.w));}
 
   for (var i = 0; i < this.n; ++i) {
     this.pRelative[i] = this.fromPoints[i].subtract(pAverage);
@@ -97,8 +98,7 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
       .dotP(this.pRelative[j]) * this.w[j];
   }
 
-  var r = qAverage; //r is an point 
-  if (!r.x) {alert('qaverage '+JSON.stringify(r));}
+  var r = qAverage; //r is an point
   for (var j = 0; j < this.n; ++j) {
     r = r.add(this.qRelative[j].multiply_d(this.A[j]));
   }
