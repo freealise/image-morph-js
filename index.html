@@ -94,7 +94,7 @@
             var canvas = document.getElementById(target);
             loadImg(target, canvas, img);
             
-            var points = JSON.parse('[{"x":191,"y":228},{"x":217,"y":217},{"x":268,"y":233},{"x":335,"y":231},{"x":383,"y":222},{"x":410,"y":229},{"x":214,"y":258},{"x":240,"y":253},{"x":262,"y":258},{"x":340,"y":260},{"x":363,"y":253},{"x":390,"y":257},{"x":285,"y":339},{"x":322,"y":337},{"x":256,"y":379},{"x":302,"y":381},{"x":348,"y":379},{"x":270,"y":453},{"x":324,"y":454},{"x":160,"y":273},{"x":440,"y":274},{"x":242,"y":122},{"x":345,"y":121},{"x":190,"y":375},{"x":413,"y":373},{"x":221,"y":411},{"x":385,"y":411},{"x":106,"y":531},{"x":497,"y":534},{"x":200,"y":69},{"x":415,"y":69}]');
+            var points = JSON.parse('[{"x":191,"y":228},{"x":217,"y":217},{"x":268,"y":233},{"x":335,"y":231},{"x":383,"y":222},{"x":410,"y":229},{"x":214,"y":258},{"x":240,"y":253},{"x":262,"y":258},{"x":340,"y":260},{"x":363,"y":253},{"x":390,"y":257},{"x":285,"y":339},{"x":322,"y":337},{"x":256,"y":379},{"x":302,"y":381},{"x":348,"y":379},{"x":270,"y":453},{"x":324,"y":454},{"x":160,"y":273},{"x":440,"y":274},{"x":242,"y":122},{"x":345,"y":121},{"x":190,"y":375},{"x":413,"y":373},{"x":221,"y":411},{"x":385,"y":411},{"x":206,"y":403},{"x":415,"y":405},{"x":200,"y":69},{"x":415,"y":69}]');
             for (var x = 0; x < points.length; x++) {
                 points[x] = new ImgWarper.Point(points[x].x, points[x].y);
             }
@@ -131,7 +131,6 @@
             animator = new ImgWarper.Animator(warper['canvas1'], warper['canvas2']);
             animator.generate($("#frames").val());
 
-
             draw_all();
         });
 
@@ -151,14 +150,6 @@
                 var image = document.createElement("img");
                 image.src = res_c.toDataURL("image/png");
                 $(".frames").append(image);
-            }
-
-            for (var x = frames.length-1; x >= 0; x--) {
-                res_ctx.putImageData(frames[x],0,0);
-                var image = document.createElement("img");
-                image.src = res_c.toDataURL("image/png");
-                $(".frames").append(image);
-
             }
 
         }
