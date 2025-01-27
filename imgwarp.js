@@ -29,14 +29,12 @@ ImgWarper.Warper.prototype.warp = function(fromPoints, toPoints) {
     new ImgWarper.AffineDeformation(toPoints, fromPoints, this.alpha);
   var transformedGrid = [];
   for (var i = 0; i < this.grid.length; ++i) {
-    if (!this.grid[i][2].x) {alert(JSON.stringify('this.grid '+this.grid[i]));}
     transformedGrid[i] = [
         deformation.pointMover(this.grid[i][0]),
         deformation.pointMover(this.grid[i][1]),
         deformation.pointMover(this.grid[i][2]),
         deformation.pointMover(this.grid[i][3])
     ];
-    if (!transformedGrid[i][2].x) {alert('transformedGrid '+JSON.stringify(transformedGrid[i]));}
   }
 
   var newImg = this.bilinearInterpolation
@@ -103,6 +101,7 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
   for (var j = 0; j < this.n; ++j) {
     r = r.add(this.qRelative[j].multiply_d(this.A[j]));
   }
+  if (!r.x) {alert('r '+JSON.stringify(r));}
   return r;
 };
 
