@@ -75,7 +75,7 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
   for (var i = 0; i < this.n; ++i) {
     var t = this.fromPoints[i].subtract(point);
     this.w[i] = Math.pow(t.x * t.x + t.y * t.y, -this.alpha);
-    if (!t.x || !t.y) {alert('t '+JSON.stringify(t)+' '+this.alpha);}
+    if (!parseFloat(this.w[i])) {alert('t '+JSON.stringify(t));}
   }
   
   var pAverage = ImgWarper.Point.weightedAverage(this.fromPoints, this.w);
