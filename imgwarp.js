@@ -2,7 +2,7 @@ var ImgWarper = ImgWarper || {};
 
 ImgWarper.Warper = function(
   imgData, optGridSize, optAlpha) {
-  this.alpha = optAlpha || 256;
+  this.alpha = optAlpha || 128;
   this.gridSize = optGridSize || 20;
 
   this.width = imgData.width;
