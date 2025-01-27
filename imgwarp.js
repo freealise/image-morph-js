@@ -433,7 +433,7 @@ ImgWarper.Animator.prototype.generate = function(frames) {
   var warper1 = new ImgWarper.Warper(this.pointDefiner1.imgData);
   var warper2 = new ImgWarper.Warper(this.pointDefiner2.imgData);
 
-  for (var x = 0; x <= parseInt(steps.length/2); x++) {
+  for (var x = 0; x < steps.length; x++) {
     var step = steps[x];
 
     // transform both images
@@ -444,7 +444,7 @@ ImgWarper.Animator.prototype.generate = function(frames) {
     var res = this.blendImages(img1, img2, x, steps.length);
 
     // draw frame
-    if (document.getElementById('animate').checked || x == parseInt(steps.length/2)) {
+    if (document.getElementById('animate').checked || x == steps.length-1) {
       this.frames.push(res);
     }
   }
