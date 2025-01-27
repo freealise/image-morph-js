@@ -2,7 +2,7 @@ var ImgWarper = ImgWarper || {};
 
 ImgWarper.Warper = function(
   imgData, optGridSize, optAlpha) {
-  this.alpha = optAlpha || 96;
+  this.alpha = optAlpha || 1;
   this.gridSize = optGridSize || 20;
 
   this.width = imgData.width;
@@ -74,7 +74,7 @@ ImgWarper.AffineDeformation.prototype.pointMover = function (point){
 
   for (var i = 0; i < this.n; ++i) {
     var t = this.fromPoints[i].subtract(point);
-    this.w[i] = Math.pow(t.x * t.x + t.y * t.y, -this.alpha);
+    this.w[i] = parseFloat(0.00001 + Math.pow(t.x * t.x + t.y * t.y, -this.alpha));
   }
   
   var pAverage = ImgWarper.Point.weightedAverage(this.fromPoints, this.w);
@@ -260,7 +260,7 @@ ImgWarper.Point.weightedAverage = function (p, w) {
   }
   
   var pt = new ImgWarper.Point(sx / sw, sy / sw);
-  if (!pt.x) {alert('96 '+sx+', '+sy+', '+sw);}
+  if (!pt.x) {alert(' '+sx+', '+sy+', '+sw);}
   return pt;
 };
 
