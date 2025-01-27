@@ -433,32 +433,18 @@ ImgWarper.Animator.prototype.generate = function(frames) {
   var warper1 = new ImgWarper.Warper(this.pointDefiner1.imgData);
   var warper2 = new ImgWarper.Warper(this.pointDefiner2.imgData);
 
-  if (document.getElementById('animate').checked) {
-    for (var x = 0; x < steps.length; x++) {
-      var step = steps[x];
+  for (var x = 0; x <= parseInt(steps.length/2); x++) {
+    var step = steps[x];
 
-      // transform both images
-      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+    // transform both images
+    var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
+    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-      // blend images
-      var res = this.blendImages(img1, img2, x, steps.length);
+    // blend images
+    var res = this.blendImages(img1, img2, x, steps.length);
 
-      // draw frame
-      this.frames.push(res);
-    }
-  } else {
-    for (var x = 0; x < steps.length; x+=parseInt(steps/2)) {
-      var step = steps[x];
-
-      // transform both images
-      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
-
-      // blend images
-      var res = this.blendImages(img1, img2, x, steps.length);
-
-      // draw frame
+    // draw frame
+    if (document.getElementById('animate').checked || x == parseInt(steps.length/2)) {
       this.frames.push(res);
     }
   }
