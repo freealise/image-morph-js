@@ -29,11 +29,14 @@ ImgWarper.Warper.prototype.warp = function(fromPoints, toPoints) {
     new ImgWarper.AffineDeformation(toPoints, fromPoints, this.alpha);
   var transformedGrid = [];
   for (var i = 0; i < this.grid.length; ++i) {
+    if (!this.grid[i][2].x) {alert(JSON.stringify('this.grid '+this.grid[i]));}
     transformedGrid[i] = [
         deformation.pointMover(this.grid[i][0]),
         deformation.pointMover(this.grid[i][1]),
         deformation.pointMover(this.grid[i][2]),
-        deformation.pointMover(this.grid[i][3])];
+        deformation.pointMover(this.grid[i][3])
+    ];
+    if (!transformedGrid[i][2].x) {alert('transformedGrid '+JSON.stringify(transformedGrid[i]));}
   }
 
   var newImg = this.bilinearInterpolation
@@ -157,7 +160,6 @@ ImgWarper.BilinearInterpolation.prototype.fill =
             this.imgTargetData.data[index + 3] = 255;
             continue;
           }
-          try{
           var srcX1 = Math.floor(srcX);
           var srcY1 = Math.floor(srcY);
           var base = ((srcY1 * this.width) + srcX1) * 4;
@@ -166,8 +168,6 @@ ImgWarper.BilinearInterpolation.prototype.fill =
           this.imgTargetData.data[index + 1] = this.imgData[base + 1];
           this.imgTargetData.data[index + 2] = this.imgData[base + 2];
           this.imgTargetData.data[index + 3] = this.imgData[base + 3];
-          if (!this.imgData[base + 3]) {alert(xr + ' ' + xl + ' ' + sourcePoints[3].x + ' ' + sourcePoints[3].y + ' ' + sourcePoints[2].x + ' ' + sourcePoints[2].y + ' ' + this.imgData[base + 3])}
-          }catch(e){alert(e)}
         }
       }
     };
