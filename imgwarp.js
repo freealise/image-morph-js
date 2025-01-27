@@ -151,9 +151,9 @@ ImgWarper.BilinearInterpolation.prototype.fill =
           index = ((j * this.width) + i) * 4;
           if (srcX < 0 || srcX > this.width - 1 ||
               srcY < 0 || srcY > this.height - 1) {
-            this.imgTargetData.data[index] = 0;
-            this.imgTargetData.data[index + 1] = 0;
-            this.imgTargetData.data[index + 2] = 0;
+            this.imgTargetData.data[index] = 255;
+            this.imgTargetData.data[index + 1] = 255;
+            this.imgTargetData.data[index + 2] = 255;
             this.imgTargetData.data[index + 3] = 255;
             continue;
           }
