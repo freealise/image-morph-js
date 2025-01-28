@@ -18,6 +18,9 @@
 </head>
 <body>
     <p>
+        saturation <input type="range" id="saturation" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
+        lightness <input type="range" id="lightness" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
+        contrast <input type="range" id="contrast" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
         define matching points on both images (in same order)
         <input type="checkbox" id="erase" />Erase
     </p>
@@ -54,12 +57,17 @@
     <script src="./imgwarp.js"></script>
     <script>
 
+        var reloadImgs = function() {
+            loadImg('canvas1', document.getElementById(target), img1);
+            loadImg('canvas2', document.getElementById(target), img2);
+        }
 
         var warper = {};
         var loadImg = function(target, canvas, img) {
             var ratio = canvas.width / img.width;      // set canvas size big enough for the image
             canvas.height = img.height*ratio
             var ctx = canvas.getContext("2d");
+            ctx.filter = "brightness("+document.getElementById("lightness").value+") contrast("+document.getElementById("contrast").value+") saturate("+document.getElementById("saturation").value+")";
             ctx.drawImage(img,0,0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 
             img.width = canvas.width;
