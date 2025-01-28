@@ -18,18 +18,21 @@
 </head>
 <body>
     <p>
-        saturation <input type="range" id="saturation" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
-        lightness <input type="range" id="lightness" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
-        contrast <input type="range" id="contrast" max="2.0" min="0.5" value="1.0" onchange="reloadImgs();"/><br/>
         define matching points on both images (in same order)
         <input type="checkbox" id="erase" />Erase
     </p>
     <div class="img">
+        saturation <input type="range" id="saturation1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
+        lightness <input type="range" id="lightness1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
+        contrast <input type="range" id="contrast1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
         <canvas id="canvas1" width="600" height="600"></canvas><br>
         <input type="button" class="clear" value="clear points" target="canvas1">
         <input type="file" target="canvas1">
     </div>
     <div class="img">
+        saturation <input type="range" id="saturation2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
+        lightness <input type="range" id="lightness2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
+        contrast <input type="range" id="contrast2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
         <canvas id="canvas2" width="600"  height="600"></canvas><br>
         <input type="button" class="clear" value="clear points" target="canvas2">
         <input type="file" target="canvas2">
@@ -57,17 +60,21 @@
     <script src="./imgwarp.js"></script>
     <script>
 
-        var reloadImgs = function() {
-            loadImg('canvas1', document.getElementById(target), img1);
-            loadImg('canvas2', document.getElementById(target), img2);
+        var reloadImg = function(img) {
+            if (img == img1) {
+              loadImg('canvas1', document.getElementById(target), img);
+            } else {
+              loadImg('canvas2', document.getElementById(target), img);
+            }
         }
 
         var warper = {};
         var loadImg = function(target, canvas, img) {
+            var n = target.slice(-1);
             var ratio = canvas.width / img.width;      // set canvas size big enough for the image
             canvas.height = img.height*ratio
             var ctx = canvas.getContext("2d");
-            ctx.filter = "brightness("+document.getElementById("lightness").value+") contrast("+document.getElementById("contrast").value+") saturate("+document.getElementById("saturation").value+")";
+            ctx.filter = "brightness("+document.getElementById("lightness"+n).value+") contrast("+document.getElementById("contrast"+n).value+") saturate("+document.getElementById("saturation"+n).value+")";
             ctx.drawImage(img,0,0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 
             img.width = canvas.width;
