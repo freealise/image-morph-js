@@ -22,17 +22,17 @@
         <input type="checkbox" id="erase" />Erase
     </p>
     <div class="img">
-        saturation <input type="range" id="saturation1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
-        lightness <input type="range" id="lightness1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
-        contrast <input type="range" id="contrast1" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img1);"/><br/>
+        saturation <input type="range" id="saturation1" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(1);"/><br/>
+        lightness <input type="range" id="lightness1" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(1);"/><br/>
+        contrast <input type="range" id="contrast1" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(1);"/><br/>
         <canvas id="canvas1" width="600" height="600"></canvas><br>
         <input type="button" class="clear" value="clear points" target="canvas1">
         <input type="file" target="canvas1">
     </div>
     <div class="img">
-        saturation <input type="range" id="saturation2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
-        lightness <input type="range" id="lightness2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
-        contrast <input type="range" id="contrast2" max="2.0" min="0.5" value="1.0" onchange="reloadImg(img2);"/><br/>
+        saturation <input type="range" id="saturation2" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(2);"/><br/>
+        lightness <input type="range" id="lightness2" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(2);"/><br/>
+        contrast <input type="range" id="contrast2" max="2.0" min="0.5" value="1.0" step="0.001" onchange="reloadImg(2);"/><br/>
         <canvas id="canvas2" width="600"  height="600"></canvas><br>
         <input type="button" class="clear" value="clear points" target="canvas2">
         <input type="file" target="canvas2">
@@ -60,12 +60,14 @@
     <script src="./imgwarp.js"></script>
     <script>
 
-        var reloadImg = function(img) {
-            if (img == img1) {
-              loadImg('canvas1', document.getElementById(target), img);
+        var reloadImg = function(n) {
+            try{
+            if (n == 1) {
+              loadImg('canvas1', document.getElementById(target), img1);
             } else {
-              loadImg('canvas2', document.getElementById(target), img);
+              loadImg('canvas2', document.getElementById(target), img2);
             }
+            }catch(e){alert(e)}
         }
 
         var warper = {};
