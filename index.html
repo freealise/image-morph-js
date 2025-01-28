@@ -60,7 +60,6 @@
             var ratio = canvas.width / img.width;      // set canvas size big enough for the image
             canvas.height = img.height*ratio
             var ctx = canvas.getContext("2d");
-            ctx.filter = "brightness("+document.getElementById("lightness"+n).value+") contrast("+document.getElementById("contrast"+n).value+") saturate("+document.getElementById("saturation"+n).value+")";
             ctx.drawImage(img,0,0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 
             img.width = canvas.width;
