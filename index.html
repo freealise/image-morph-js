@@ -35,8 +35,8 @@
     <div class="img">
         <canvas id="result" width="600" height="600"></canvas><br>
         <input type="text" id="frames" value="30">
-        <input type="checkbox" id="blend" checked/>Blend
-        <input type="checkbox" id="animate"/>Animate
+        <input type="checkbox" id="blend"/>Blend
+        <input type="checkbox" id="animate" onchange="if(this.value===false){document.getElementById('blend').value=false;}"/>Animate
         <input type="button" id="generate" value="generate">
         <input type="button" onclick="drawing=!drawing;draw();" value="draw">
 
@@ -50,8 +50,8 @@
 
     </div>
 
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="imgwarp.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="./imgwarp.js"></script>
     <script>
 
 
