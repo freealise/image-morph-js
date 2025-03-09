@@ -437,9 +437,7 @@ ImgWarper.Animator.prototype.generate = function(frames) {
     var res = this.blendImages(img1, img2, x, steps.length);
 
     // draw frame
-    if (document.getElementById('animate').checked || x == steps.length-1) {
-      this.frames.push(res);
-    }
+    this.frames.push(res);
   }
 };
 
