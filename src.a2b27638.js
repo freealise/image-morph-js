@@ -96975,8 +96975,8 @@ const VIDEO_SIZE = {
 exports.VIDEO_SIZE = VIDEO_SIZE;
 const STATE = {
   camera: {
-    targetFPS: 60,
-    sizeOption: '640 X 480'
+    targetFPS: 25,
+    sizeOption: '360 X 270'
   },
   backend: '',
   flags: {},
@@ -96986,8 +96986,8 @@ exports.STATE = STATE;
 const MEDIAPIPE_FACE_CONFIG = {
   maxFaces: 1,
   refineLandmarks: true,
-  triangulateMesh: true,
-  boundingBox: true
+  triangulateMesh: false,
+  boundingBox: false
 };
 exports.MEDIAPIPE_FACE_CONFIG = MEDIAPIPE_FACE_CONFIG;
 const LABEL_TO_COLOR = {
