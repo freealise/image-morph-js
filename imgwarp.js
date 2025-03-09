@@ -427,17 +427,19 @@ ImgWarper.Animator.prototype.generate = function(frames) {
   var warper2 = new ImgWarper.Warper(this.pointDefiner2.imgData);
 
   for (var x = 0; x < steps.length; x++) {
-    var step = steps[x];
+    if (document.getElementById('animate').checked || x == steps.length-1)
+      var step = steps[x];
 
-    // transform both images
-    var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+      // transform both images
+      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
+      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-    // blend images
-    var res = this.blendImages(img1, img2, x, steps.length);
+      // blend images
+      var res = this.blendImages(img1, img2, x, steps.length);
 
-    // draw frame
-    this.frames.push(res);
+      // draw frame
+      this.frames.push(res);
+    }
   }
 };
 
