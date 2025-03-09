@@ -299,6 +299,7 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
 ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
   e.preventDefault();
   this.dragging_ = false;
+  document.getElementById('generate').click();
 }
 
 ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
