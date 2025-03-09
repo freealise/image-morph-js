@@ -96978,7 +96978,7 @@ const STATE = {
     targetFPS: 25,
     sizeOption: '360 X 270'
   },
-  backend: 'tfjs',
+  backend: '',
   flags: {},
   modelConfig: {}
 };
