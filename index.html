@@ -138,6 +138,9 @@
             animator = new ImgWarper.Animator(warper['canvas1'], warper['canvas2']);
             animator.generate($("#frames").val());
 
+            if (document.getElementById("animate").checked) {
+              $("#frameset").empty();
+            }
             draw_all();
         }
         $("#generate").click(generateFrames);
@@ -151,7 +154,6 @@
         var intv = null;
 
         function draw_all() {
-            $("#frameset").empty();
             frames = animator.frames;
 
             for (var x = 0; x < frames.length; x++) {
