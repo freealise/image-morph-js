@@ -96978,14 +96978,14 @@ const STATE = {
     targetFPS: 25,
     sizeOption: '360 X 270'
   },
-  backend: '',
+  backend: 'tfjs-webgl',
   flags: {},
   modelConfig: {}
 };
 exports.STATE = STATE;
 const MEDIAPIPE_FACE_CONFIG = {
   maxFaces: 1,
-  refineLandmark: false,
+  refineLandmarks: false,
   triangulateMesh: false,
   boundingBox: false
 };
