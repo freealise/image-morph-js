@@ -94738,7 +94738,7 @@ exports.landmarksToDetection = landmarksToDetection;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DEFAULT_FACE_MESH_ESTIMATION_CONFIG = exports.DEFAULT_FACE_MESH_MODEL_CONFIG = void 0;
 exports.DEFAULT_FACE_MESH_MODEL_CONFIG = {
-    runtime: 'tfjs',
+    runtime: 'mediapipe',
     maxFaces: 1,
     refineLandmarks: false
 };
@@ -96978,7 +96978,7 @@ const STATE = {
     targetFPS: 25,
     sizeOption: '360 X 270'
   },
-  backend: 'tfjs-webgl',
+  backend: 'tfjs',
   flags: {},
   modelConfig: {}
 };
@@ -97937,7 +97937,8 @@ async function app() {
   const urlParams = new URLSearchParams(window.location.search);
 
   if (!urlParams.has('model')) {
-    alert('Cannot find model in the query string.');
+    window.location.href += '?model=mediapipe_face_mesh';
+    //alert('Cannot find model in the query string.');
     return;
   }
 
