@@ -97058,7 +97058,7 @@ const BACKEND_FLAGS_MAP = {
 };
 exports.BACKEND_FLAGS_MAP = BACKEND_FLAGS_MAP;
 const MODEL_BACKEND_MAP = {
-  [faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh]: ['tfjs-webgl', 'mediapipe-gpu']
+  [faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh]: ['mediapipe-gpu', 'tfjs-webgl']
 };
 exports.MODEL_BACKEND_MAP = MODEL_BACKEND_MAP;
 const TUNABLE_FLAG_NAME_MAP = {
