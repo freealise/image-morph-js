@@ -143,6 +143,7 @@
         var intv = null;
 
         function draw_all() {
+            document.getElementsByClassName("frames")[0].innerHTML = '';
             frames = animator.frames;
 
             for (var x = 0; x < frames.length; x++) {
