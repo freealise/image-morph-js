@@ -97492,7 +97492,7 @@ async function showBackendConfigs(folderController) {
 
   const backends = params.MODEL_BACKEND_MAP[params.STATE.model]; // The first element of the array is the default backend for the model.
 
-  params.STATE.backend = backends[0];
+  params.STATE.backend = backends[1];
   const backendController = folderController.add(params.STATE, 'backend', backends);
   backendController.name('runtime-backend');
   backendController.onChange(async backend => {
