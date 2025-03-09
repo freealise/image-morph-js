@@ -126,13 +126,14 @@
 
         var animator = null;
         var frames = [];
-        $("#generate").click(function() {
+        function generateFrames() {
             // get points from both images
             animator = new ImgWarper.Animator(warper['canvas1'], warper['canvas2']);
             animator.generate($("#frames").val());
 
             draw_all();
-        });
+        }
+        $("#generate").click(generateFrames());
 
         var play_frame = 0;
         var direction = true;
