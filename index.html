@@ -156,9 +156,11 @@
 
             for (var x = 0; x < frames.length; x++) {
                 res_ctx.putImageData(frames[x],0,0);
-                var image = document.createElement("img");
-                image.src = res_c.toDataURL("image/png");
-                $(".frames").append(image);
+                if (document.getElementById("animate").checked) {
+                  var image = document.createElement("img");
+                  image.src = res_c.toDataURL("image/png");
+                  $(".frames").append(image);
+                }
             }
 
         }
