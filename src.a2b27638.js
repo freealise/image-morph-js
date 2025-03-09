@@ -96985,7 +96985,7 @@ const STATE = {
 exports.STATE = STATE;
 const MEDIAPIPE_FACE_CONFIG = {
   maxFaces: 1,
-  refineLandmarks: true,
+  refineLandmark: false,
   triangulateMesh: false,
   boundingBox: false
 };
@@ -97058,7 +97058,7 @@ const BACKEND_FLAGS_MAP = {
 };
 exports.BACKEND_FLAGS_MAP = BACKEND_FLAGS_MAP;
 const MODEL_BACKEND_MAP = {
-  [faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh]: ['mediapipe-gpu', 'tfjs-webgl']
+  [faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh]: ['tfjs-webgl', 'mediapipe-gpu']
 };
 exports.MODEL_BACKEND_MAP = MODEL_BACKEND_MAP;
 const TUNABLE_FLAG_NAME_MAP = {
