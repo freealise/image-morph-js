@@ -299,8 +299,6 @@ ImgWarper.PointDefiner = function(canvas, image, imgData) {
 ImgWarper.PointDefiner.prototype.touchEnd = function(e) {
   e.preventDefault();
   this.dragging_ = false;
-  
-  document.getElementById('generate').click();
 }
 
 ImgWarper.PointDefiner.prototype.touchDrag = function(e) {
@@ -429,17 +427,17 @@ ImgWarper.Animator.prototype.generate = function(frames) {
   var warper2 = new ImgWarper.Warper(this.pointDefiner2.imgData);
 
   for (var x = 0; x < steps.length; x++) {
-    if (document.getElementById('animate').checked || x == steps.length-1)
-      var step = steps[x];
+    var step = steps[x];
 
-      // transform both images
-      var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
-      var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
+    // transform both images
+    var img1 = warper1.warp(this.pointDefiner1.oriPoints, step);
+    var img2 = warper2.warp(this.pointDefiner2.oriPoints, step);
 
-      // blend images
-      var res = this.blendImages(img1, img2, x, steps.length);
+    // blend images
+    var res = this.blendImages(img1, img2, x, steps.length);
 
-      // draw frame
+    // draw frame
+    if (document.getElementById('animate').checked || x == steps.length-1) {
       this.frames.push(res);
     }
   }
