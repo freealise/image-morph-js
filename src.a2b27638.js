@@ -97933,15 +97933,6 @@ async function renderPrediction() {
 
 ;
 
-var json_file = [''];
-
-function downloadFile() {
-  document.getElementById('json_link').href = "data:text/plain;base64," + btoa(json_file[0]);
-  document.getElementById('json_link').download = 'face_keypoints.json';
-  document.getElementById('json_link').click();
-  document.getElementById('json_link').href = "#";
-}
-
 async function app() {
   // Gui content will change depending on which model is in the query string.
   const urlParams = new URLSearchParams(window.location.search);
