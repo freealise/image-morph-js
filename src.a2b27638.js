@@ -97727,9 +97727,11 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
  */
 async function setupDatGui(urlParams) {
   const gui = new dat.GUI({
-    width: 256
+    width: 256,
+    autoPlace: true
   });
   gui.domElement.id = 'gui'; // The camera folder contains options for video settings.
+  document.getElementById('gui').style.right = '0px';
   gui.close();
 
   const cameraFolder = gui.addFolder('Camera');
