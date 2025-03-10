@@ -97246,15 +97246,6 @@ function drawPath(ctx, points, closePath) {
  * @param boundingBox Whether or not to display the bounding box.
  */
 
-var json_file = [''];
-
-function downloadFile() {
-  document.getElementById('json_link').href = "data:text/plain;base64," + btoa(json_file[0]);
-  document.getElementById('json_link').download = 'face_keypoints.json';
-  document.getElementById('json_link').click();
-  document.getElementById('json_link').href = "#";
-}
-
 function drawResults(ctx, faces, triangulateMesh, boundingBox) {
   json_file[0] = JSON.stringify(faces[0].keypoints);
   
@@ -97941,6 +97932,15 @@ async function renderPrediction() {
 }
 
 ;
+
+var json_file = [''];
+
+function downloadFile() {
+  document.getElementById('json_link').href = "data:text/plain;base64," + btoa(json_file[0]);
+  document.getElementById('json_link').download = 'face_keypoints.json';
+  document.getElementById('json_link').click();
+  document.getElementById('json_link').href = "#";
+}
 
 async function app() {
   // Gui content will change depending on which model is in the query string.
