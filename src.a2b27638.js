@@ -97727,9 +97727,10 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
  */
 async function setupDatGui(urlParams) {
   const gui = new dat.GUI({
-    width: 300
+    width: 256
   });
   gui.domElement.id = 'gui'; // The camera folder contains options for video settings.
+  gui.close();
 
   const cameraFolder = gui.addFolder('Camera');
   const fpsController = cameraFolder.add(params.STATE.camera, 'targetFPS');
