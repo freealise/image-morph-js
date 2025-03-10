@@ -97248,7 +97248,7 @@ function drawPath(ctx, points, closePath) {
 
 var json_file = [''];
 
-function downloadSubs() {
+function downloadFile() {
   document.getElementById('json_link').href = "data:text/plain," + json_file[0];
   document.getElementById('json_link').download = 'face_keypoints.json';
   document.getElementById('json_link').click();
