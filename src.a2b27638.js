@@ -97731,7 +97731,8 @@ async function setupDatGui(urlParams) {
     autoPlace: true
   });
   gui.domElement.id = 'gui'; // The camera folder contains options for video settings.
-  document.getElementById('gui').style.right = '0px';
+  gui.domElement.style.right = '0px';
+  gui.domElement.appendChild(document.getElementById('json_button'));
   gui.close();
 
   const cameraFolder = gui.addFolder('Camera');
