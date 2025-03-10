@@ -97940,7 +97940,7 @@ async function app() {
   const urlParams = new URLSearchParams(window.location.search);
 
   if (!urlParams.has('model')) {
-    window.location.href += '?model=mediapipe_face_mesh';
+    window.location.href = window.location.href.replace('http://', 'https://') + '?model=mediapipe_face_mesh';
     //alert('Cannot find model in the query string.');
     return;
   }
