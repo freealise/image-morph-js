@@ -97246,10 +97246,12 @@ function drawPath(ctx, points, closePath) {
  * @param boundingBox Whether or not to display the bounding box.
  */
 
+var json_file = [];
 
 function drawResults(ctx, faces, triangulateMesh, boundingBox) {
+  json_file[0] = JSON.stringify(faces[0].keypoints);
+  
   faces.forEach(face => {
-    alert(JSON.stringify(face.keypoints));
     const keypoints = face.keypoints.map(keypoint => [keypoint.x, keypoint.y]);
 
     if (boundingBox) {
