@@ -371,6 +371,7 @@ async function predictWebcam() {
         results = faceLandmarker.detectForVideo(video, startTimeMs);
     }
     if (results.faceLandmarks) {
+        alert(JSON.stringify(results.faceLandmarks));
         for (const landmarks of results.faceLandmarks) {
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, { color: "#C0C0C070", lineWidth: 1 });
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE, { color: "#FF3030" });
