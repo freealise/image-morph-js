@@ -353,7 +353,7 @@ function enableCam(event) {
     // getUsermedia parameters.
     const constraints = {
         //video: true
-        video: { frameRate: { min: 5, max: 25 } }
+        video: { frameRate: { ideal: 25, min: 5, max: 25 } }
     };
     // Activate the webcam stream.
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -364,14 +364,16 @@ function enableCam(event) {
 let lastVideoTime = -1;
 let results = undefined;
 const drawingUtils = new DrawingUtils(canvasCtx);
+
+const radio = video.videoHeight / video.videoWidth;
+video.style.width = videoWidth + "px";
+video.style.height = videoWidth * radio + "px";
+canvasElement.style.width = videoWidth + "px";
+canvasElement.style.height = videoWidth * radio + "px";
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+    
 async function predictWebcam() {
-    const radio = video.videoHeight / video.videoWidth;
-    video.style.width = videoWidth + "px";
-    video.style.height = videoWidth * radio + "px";
-    canvasElement.style.width = videoWidth + "px";
-    canvasElement.style.height = videoWidth * radio + "px";
-    canvasElement.width = video.videoWidth;
-    canvasElement.height = video.videoHeight;
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
