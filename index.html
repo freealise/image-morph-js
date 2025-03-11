@@ -247,6 +247,10 @@ function downloadFile() {
     json_file[0][i].r = Math.sqrt(x*x + y*y + z*z);
     json_file[0][i].theta = Math.acos(z/json_file[0][i].r);
     json_file[0][i].phi = Math.atan2(y, x);
+    
+    json_file[0][i].x = x;
+    json_file[0][i].y = y;
+    json_file[0][i].z = z;
   }
 
   document.getElementById('json_link').href = "data:text/plain;base64," + btoa(JSON.stringify(json_file[0]));
