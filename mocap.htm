@@ -240,7 +240,7 @@ let faceLandmarker;
 let runningMode = "IMAGE";
 let enableWebcamButton;
 let webcamRunning = false;
-const videoWidth = 320;
+const videoWidth = 256;
 // Before we can use HandLandmarker class we must wait for it to finish
 // loading. Machine Learning models can be large and take a moment to
 // get everything needed to run.
@@ -352,7 +352,8 @@ function enableCam(event) {
     }
     // getUsermedia parameters.
     const constraints = {
-        video: true
+        //video: true
+        video: { frameRate: { min: 5, max: 25 } }
     };
     // Activate the webcam stream.
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
