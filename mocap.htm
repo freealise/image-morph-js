@@ -364,19 +364,20 @@ function enableCam(event) {
 let lastVideoTime = -1;
 let results = undefined;
 const drawingUtils = new DrawingUtils(canvasCtx);
-
-const radio = video.videoHeight / video.videoWidth;
-video.style.width = videoWidth + "px";
-video.style.height = videoWidth * radio + "px";
-canvasElement.style.width = videoWidth + "px";
-canvasElement.style.height = videoWidth * radio + "px";
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
     
 async function predictWebcam() {
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
+        
+        const radio = video.videoHeight / video.videoWidth;
+        video.style.width = videoWidth + "px";
+        video.style.height = videoWidth * radio + "px";
+        canvasElement.style.width = videoWidth + "px";
+        canvasElement.style.height = videoWidth * radio + "px";
+        canvasElement.width = video.videoWidth;
+        canvasElement.height = video.videoHeight;
+
         await faceLandmarker.setOptions({ runningMode: runningMode });
     }
     let startTimeMs = performance.now();
