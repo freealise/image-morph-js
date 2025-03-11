@@ -240,9 +240,9 @@ function downloadFile() {
   const c = { 'x': (l.x + r.x)/2, 'y': (l.y + r.y)/2, 'z': 0.0 };
   
   for (var i=0; i<json_file[0].length; i++) {
-    const x = (json_file[0][i].x - c.x) / (t.x - c.x);
-    const y = (json_file[0][i].y - c.y) / (t.y - c.y);
-    const z = json_file[0][i].z / (t.x - c.x);
+    const x = (json_file[0][i].x - c.x) / Math.abs(t.x - c.x);
+    const y = (json_file[0][i].y - c.y) / Math.abs(t.y - c.y);
+    const z = json_file[0][i].z / Math.abs(t.x - c.x);
     
     json_file[0][i].r = Math.sqrt(x*x + y*y + z*z);
     json_file[0][i].theta = Math.acos(z/json_file[0][i].r) - Math.PI;
