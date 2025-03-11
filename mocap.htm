@@ -198,6 +198,7 @@ footer {
         <span class="mdc-button__ripple"></span>
         <span class="mdc-button__label">ENABLE WEBCAM</span>
       </button>
+      <a id="json_link" href="#"></a><button id="json_button" onclick="try{downloadFile()}catch(e){alert(e)}">Download</button>
       <div style="position: relative;">
         <video id="webcam" style="position: abso" autoplay playsinline></video>
         <canvas class="output_canvas" id="output_canvas" style="position: absolute; left: 0px; top: 0px;"></canvas>
@@ -351,7 +352,7 @@ function enableCam(event) {
 }
 let lastVideoTime = -1;
 let results = undefined;
-let json_data = "";
+let json_file = [""];
 const drawingUtils = new DrawingUtils(canvasCtx);
 async function predictWebcam() {
     const radio = video.videoHeight / video.videoWidth;
@@ -372,7 +373,7 @@ async function predictWebcam() {
         results = faceLandmarker.detectForVideo(video, startTimeMs);
     }
     if (results.faceLandmarks) {
-        json_data = JSON.stringify(results.faceLandmarks);
+        json_file[0] = JSON.stringify(results.faceLandmarks);
         for (const landmarks of results.faceLandmarks) {
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, { color: "#C0C0C070", lineWidth: 1 });
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE, { color: "#FF3030" });
