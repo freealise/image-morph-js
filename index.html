@@ -232,6 +232,12 @@
 var json_file = [''];
 
 function downloadFile() {
+  for (var i=0; i<json_file[0].length; i++) {
+    r = Math.sqrt(x*x + y*y + z*z);
+    θ = Math.acos(z/r);
+    φ = Math.atan2(y, x);
+  }
+
   document.getElementById('json_link').href = "data:text/plain;base64," + btoa(JSON.stringify(json_file[0]));
   document.getElementById('json_link').download = 'face_keypoints.json';
   document.getElementById('json_link').click();
