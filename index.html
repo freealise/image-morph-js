@@ -233,9 +233,13 @@ var json_file = [''];
 
 function downloadFile() {
   for (var i=0; i<json_file[0].length; i++) {
-    r = Math.sqrt(x*x + y*y + z*z);
-    θ = Math.acos(z/r);
-    φ = Math.atan2(y, x);
+    const x = json_file[0][i].x;
+    const y = json_file[0][i].y;
+    const z = json_file[0][i].z;
+    
+    json_file[0][i].r = Math.sqrt(x*x + y*y + z*z);
+    json_file[0][i].theta = Math.acos(z/r);
+    json_file[0][i].phi = Math.atan2(y, x);
   }
 
   document.getElementById('json_link').href = "data:text/plain;base64," + btoa(JSON.stringify(json_file[0]));
