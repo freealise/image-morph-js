@@ -245,8 +245,8 @@ function downloadFile() {
     const z = json_file[0][i].z / Math.abs(t.x - c.x);
     
     json_file[0][i].r = Math.sqrt(x*x + y*y + z*z);
-    json_file[0][i].theta = Math.acos(z/json_file[0][i].r) - Math.PI;
-    json_file[0][i].phi = Math.atan2(y, x) - Math.PI/2;
+    json_file[0][i].theta = Math.acos(z/json_file[0][i].r);
+    json_file[0][i].phi = Math.atan2(y, x);
   }
 
   document.getElementById('json_link').href = "data:text/plain;base64," + btoa(JSON.stringify(json_file[0]));
