@@ -240,7 +240,7 @@ let faceLandmarker;
 let runningMode = "IMAGE";
 let enableWebcamButton;
 let webcamRunning = false;
-const videoWidth = 360;
+const videoWidth = 320;
 // Before we can use HandLandmarker class we must wait for it to finish
 // loading. Machine Learning models can be large and take a moment to
 // get everything needed to run.
@@ -317,7 +317,7 @@ async function handleClick(event) {
         drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS, { color: "#FF3030" });
         drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS, { color: "#30FF30" });*/
     }
-    drawBlendShapes(imageBlendShapes, faceLandmarkerResult.faceBlendshapes);
+    //drawBlendShapes(imageBlendShapes, faceLandmarkerResult.faceBlendshapes);
 }
 /********************************************************************
 // Demo 2: Continuously grab image from webcam stream and detect it.
@@ -397,10 +397,11 @@ async function predictWebcam() {
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS, { color: "#30FF30" });*/
         }
     }
-    drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
+    //drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
     // Call this function again to keep predicting when the browser is ready.
     if (webcamRunning === true) {
-        window.requestAnimationFrame(predictWebcam);
+        setTimeout(predictWebcam, 40);
+        //window.requestAnimationFrame(predictWebcam);
     }
 }
 function drawBlendShapes(el, blendShapes) {
