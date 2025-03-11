@@ -97250,7 +97250,7 @@ function drawResults(ctx, faces, triangulateMesh, boundingBox) {
   json_file[0] = JSON.stringify(faces[0].keypoints);
   
   faces.forEach(face => {
-    const keypoints = face.keypoints.map(keypoint => [keypoint.x, keypoint.y]);
+    const keypoints = face.keypoints.map(keypoint => [keypoint.x, keypoint.y, keypoint.z]);
 
     if (boundingBox) {
       ctx.strokeStyle = _params.RED;
@@ -97273,6 +97273,12 @@ function drawResults(ctx, faces, triangulateMesh, boundingBox) {
       for (let i = 0; i < _params.NUM_KEYPOINTS; i++) {
         const x = keypoints[i][0];
         const y = keypoints[i][1];
+        const z = keypoints[i][2];
+        
+        const r = Math.sqrt(x*x + y*y + z*z);
+        const theta = Math.acos(z/r);
+        const phi = Math.atan2(y, x);
+        
         ctx.beginPath();
         ctx.arc(x, y, 1
         /* radius */
