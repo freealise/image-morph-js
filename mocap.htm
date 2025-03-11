@@ -198,7 +198,7 @@ footer {
         <span class="mdc-button__ripple"></span>
         <span class="mdc-button__label">ENABLE WEBCAM</span>
       </button>
-      <a id="json_link" href="#"></a><button id="json_button" onclick="try{downloadFile()}catch(e){alert(e)}">Download</button>
+      Framerate <input type="range" min="5" max="25" value="25" step="1" id="framerate"/><a id="json_link" href="#"></a><button id="json_button" onclick="try{downloadFile()}catch(e){alert(e)}">Download</button>
       <div style="position: relative;">
         <video id="webcam" style="position: abso" autoplay playsinline></video>
         <canvas class="output_canvas" id="output_canvas" style="position: absolute; left: 0px; top: 0px;"></canvas>
@@ -240,7 +240,7 @@ let faceLandmarker;
 let runningMode = "IMAGE";
 let enableWebcamButton;
 let webcamRunning = false;
-const videoWidth = 128;
+const videoWidth = 256;
 // Before we can use HandLandmarker class we must wait for it to finish
 // loading. Machine Learning models can be large and take a moment to
 // get everything needed to run.
@@ -353,7 +353,7 @@ function enableCam(event) {
     // getUsermedia parameters.
     const constraints = {
         //video: true
-        video: { frameRate: { ideal: 25, min: 5, max: 25 } }
+        video: { frameRate: { ideal: document.getElementById('framerate').value, min: 5, max: 25 } }
     };
     // Activate the webcam stream.
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
