@@ -208,6 +208,17 @@ footer {
       <ul class="blend-shapes-list" id="video-blend-shapes"></ul>
     </div>
   </section>
+  <script>
+  
+  let json_file = [""];
+  function downloadFile() {
+    document.getElementById('json_link').href = "data:text/plain;base64," + btoa(json_file[0]);
+    document.getElementById('json_link').download = 'face_keypoints.json';
+    document.getElementById('json_link').click();
+    document.getElementById('json_link').href = "#";
+  }
+  
+  </script>
   <script type="module">
 
 // Copyright 2023 The MediaPipe Authors.
@@ -352,7 +363,6 @@ function enableCam(event) {
 }
 let lastVideoTime = -1;
 let results = undefined;
-let json_file = [""];
 const drawingUtils = new DrawingUtils(canvasCtx);
 async function predictWebcam() {
     const radio = video.videoHeight / video.videoWidth;
@@ -407,13 +417,6 @@ function drawBlendShapes(el, blendShapes) {
     `;
     });
     el.innerHTML = htmlMaker;
-}
-
-function downloadFile() {
-  document.getElementById('json_link').href = "data:text/plain;base64," + btoa(json_file[0]);
-  document.getElementById('json_link').download = 'face_keypoints.json';
-  document.getElementById('json_link').click();
-  document.getElementById('json_link').href = "#";
 }
 
   </script>
