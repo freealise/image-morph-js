@@ -308,12 +308,12 @@ async function handleClick(event) {
     const ctx = canvas.getContext("2d");
     const drawingUtils = new DrawingUtils(ctx);
     if (diff.length > 0) {
-      for (var i=0; i<faceLandmarkerResult.faceLandmarks.length; i++) {
-        faceLandmarkerResult.faceLandmarks[i].x += diff[i].x;
-        faceLandmarkerResult.faceLandmarks[i].y += diff[i].y;
-        faceLandmarkerResult.faceLandmarks[i].z += diff[i].z;
+      for (var i=0; i<faceLandmarkerResult.faceLandmarks[0].length; i++) {
+        faceLandmarkerResult.faceLandmarks[0][i].x += diff[i].x;
+        faceLandmarkerResult.faceLandmarks[0][i].y += diff[i].y;
+        faceLandmarkerResult.faceLandmarks[0][i].z += diff[i].z;
       }
-      alert(JSON.stringify(faceLandmarkerResult.faceLandmarks));
+      alert(JSON.stringify(faceLandmarkerResult.faceLandmarks[0]));
     }
     for (const landmarks of faceLandmarkerResult.faceLandmarks) {
         drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, { color: "#C0C0C070", lineWidth: 1 });
@@ -414,13 +414,13 @@ async function predictWebcam() {
         }
         if (results_old.length > 0) {
           diff = [];
-          for (var i=0; i<results.faceLandmarks.length; i++) {
-            diff.push({ 'x': results.faceLandmarks[i].x-results_old[i].x, 'y': results.faceLandmarks[i].y-results_old[i].y, 'z': results.faceLandmarks[i].z-results_old[i].z });
+          for (var i=0; i<results.faceLandmarks[0].length; i++) {
+            diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[i].x, 'y': results.faceLandmarks[0][i].y-results_old[i].y, 'z': results.faceLandmarks[0][i].z-results_old[i].z });
           }
           alert(JSON.stringify(diff));
         }
-        for (var i=0; i<results.faceLandmarks.length; i++) {
-          results_old[i] = results.faceLandmarks[i];
+        for (var i=0; i<results.faceLandmarks[0].length; i++) {
+          results_old[i] = results.faceLandmarks[0][i];
         }
         alert(JSON.stringify(results_old));
     }
