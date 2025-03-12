@@ -417,12 +417,12 @@ async function predictWebcam() {
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
             diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[i].x, 'y': results.faceLandmarks[0][i].y-results_old[i].y, 'z': results.faceLandmarks[0][i].z-results_old[i].z });
           }
-          alert(JSON.stringify(diff));
+          //alert(JSON.stringify(diff));
         }
         for (var i=0; i<results.faceLandmarks[0].length; i++) {
           results_old[i] = results.faceLandmarks[0][i];
         }
-        alert(JSON.stringify(results_old));
+        //alert(JSON.stringify(results_old));
     }
     //drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
     // Call this function again to keep predicting when the browser is ready.
