@@ -373,7 +373,7 @@ function enableCam(event) {
 }
 let lastVideoTime = -1;
 const drawingUtils = new DrawingUtils(canvasCtx);
-let results_old = undefined;
+let results_old = [];
     
 async function predictWebcam() {
     // Now let's start detecting the stream.
@@ -411,13 +411,15 @@ async function predictWebcam() {
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS, { color: "#FF3030" });
             drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS, { color: "#30FF30" });
         }
-        if (results_old) {
+        if (results_old.length > 0) {
           diff = [];
           for (var i=0; i<results.faceLandmarks.length; i++) {
-            diff.push({ 'x': results.faceLandmarks[i].x-results_old.faceLandmarks[i].x, 'y': results.faceLandmarks[i].y-results_old.faceLandmarks[i].y, 'z': results.faceLandmarks[i].z-results_old.faceLandmarks[i].z });
+            diff.push({ 'x': results.faceLandmarks[i].x-results_old[i].x, 'y': results.faceLandmarks[i].y-results_old[i].y, 'z': results.faceLandmarks[i].z-results_old[i].z });
           }
         }
-        results_old = results;
+        for (var i=0; i<results.faceLandmarks.length; i++) {
+          results_old[i] = results.faceLandmarks[i];
+        }
     }
     //drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
     // Call this function again to keep predicting when the browser is ready.
