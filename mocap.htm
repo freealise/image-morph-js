@@ -422,18 +422,11 @@ async function predictWebcam() {
         
         if (results_old.length > 0) {
           diff = [];
-  
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
-            results.faceLandmarks[0][i].x -= c.x;
-            results.faceLandmarks[0][i].y -= c.y;
-            
             diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[i].x, 'y': results.faceLandmarks[0][i].y-results_old[i].y, 'z': results.faceLandmarks[0][i].z-results_old[i].z });
           }
         } else {
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
-            results.faceLandmarks[0][i].x -= c.x;
-            results.faceLandmarks[0][i].y -= c.y;
-            
             results_old[i] = results.faceLandmarks[0][i];
           }
         }
