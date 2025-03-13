@@ -198,6 +198,7 @@ footer {
         <span class="mdc-button__ripple"></span>
         <span class="mdc-button__label">ENABLE WEBCAM</span>
       </button>
+      Update <input type="checkbox" id="update" checked/>
       Framerate <input type="range" min="5" max="25" value="25" step="1" id="framerate"/><a id="json_link" href="#"></a><button id="json_button" onclick="try{downloadFile()}catch(e){alert(e)}">Download</button>
       <div style="position: relative;">
         <video id="webcam" style="position: abso" autoplay playsinline></video>
@@ -420,7 +421,7 @@ async function predictWebcam() {
         const w = r.x - l.x;
         const h = b.y - t.y;
         
-        if (results_old.length > 0) {
+        if (results_old.length > 0 && !document.getElementById('update').checked) {
           diff = [];
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
             diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[i].x, 'y': results.faceLandmarks[0][i].y-results_old[i].y, 'z': results.faceLandmarks[0][i].z-results_old[i].z });
@@ -429,6 +430,7 @@ async function predictWebcam() {
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
             results_old[i] = results.faceLandmarks[0][i];
           }
+          document.getElementById('update').checked = false;
         }
     }
     //drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
