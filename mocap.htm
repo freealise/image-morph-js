@@ -417,7 +417,7 @@ async function predictWebcam() {
         const r = results.faceLandmarks[0][454];
         const t = results.faceLandmarks[0][10];
         const b = results.faceLandmarks[0][152];
-        const c = { 'x': (l.x + r.x)/2, 'y': (l.y + r.y)/2, 'z': 0.0 };
+        const c = { 'x': (l.x + r.x)/2, 'y': (t.y + b.y)/2, 'z': 0.0 };
         const w = r.x - l.x;
         const h = b.y - t.y;
         
