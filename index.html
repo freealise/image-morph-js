@@ -237,7 +237,7 @@ function downloadFile() {
   const r = json_file[0][454];
   const t = json_file[0][10];
   const b = json_file[0][152];
-  const c = { 'x': (l.x + r.x)/2, 'y': (l.y + r.y)/2, 'z': 0.0 };
+  const c = { 'x': (l.x + r.x)/2, 'y': (t.y + b.y)/2, 'z': 0.0 };
   
   for (var i=0; i<json_file[0].length; i++) {
     const x = (json_file[0][i].x - c.x) / Math.abs(t.x - c.x);
