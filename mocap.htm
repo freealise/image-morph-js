@@ -375,7 +375,7 @@ function enableCam(event) {
 }
 let lastVideoTime = -1;
 const drawingUtils = new DrawingUtils(canvasCtx);
-let results_old = [];
+let results_old = [[]];
     
 async function predictWebcam() {
     // Now let's start detecting the stream.
@@ -424,13 +424,24 @@ async function predictWebcam() {
         if (results_old.length > 0 && !document.getElementById('update').checked) {
           diff = [];
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
-            diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[i].x, 'y': results.faceLandmarks[0][i].y-results_old[i].y, 'z': results.faceLandmarks[0][i].z-results_old[i].z });
+            diff.push({ 'x': results.faceLandmarks[0][i].x-results_old[0][i].x, 'y': results.faceLandmarks[0][i].y-results_old[0][i].y, 'z': results.faceLandmarks[0][i].z-results_old[0][i].z });
           }
         } else {
           for (var i=0; i<results.faceLandmarks[0].length; i++) {
-            results_old[i] = results.faceLandmarks[0][i];
+            results_old[0][i] = results.faceLandmarks[0][i];
           }
           document.getElementById('update').checked = false;
+        }
+        for (const landmarks of results_old) {
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, { color: "#C0C0C070", lineWidth: 1 });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE, { color: "#FF3030" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW, { color: "#FF3030" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_EYE, { color: "#30FF30" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW, { color: "#30FF30" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_FACE_OVAL, { color: "#E0E0E0" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LIPS, { color: "#E0E0E0" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS, { color: "#FF3030" });
+            drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS, { color: "#30FF30" });
         }
     }
     //drawBlendShapes(videoBlendShapes, results.faceBlendshapes);
