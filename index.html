@@ -10,40 +10,6 @@
     body {
       margin: 0;
     }
-    
-    #json_button {
-        position: fixed;
-        top: 2em;
-        right: 0;
-    }
-    
-    #gui {
-        position: fixed;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-    }
-    
-    #stats {
-      position: fixed;
-      width: 100px;
-      height: 80px;
-      right: 256px;
-      top: 0;
-    }
-
-    #main {
-      position: fixed;
-      right:0;
-      top: 0;
-      margin: 0;
-    }
-
-    #canvas-wrapper {
-      position: relative;
-    }
-    
         .img {
             display: inline-block;
         }
@@ -93,18 +59,6 @@
     </div>
 
     <div id="frameset" class="frames"></div>
-    
-  <div id="main">
-    <div class="container">
-      <div class="canvas-wrapper">
-        <a id="json_link" href="#"></a><button id="json_button" onclick="try{downloadFile()}catch(e){alert(e)}">Download</button>
-        <canvas id="output"></canvas><video id="video" playsinline
-        style=
-        "-webkit-transform: scaleX(-1); transform: scaleX(-1); visibility: hidden; width: auto; height: auto;"></video>
-      </div>
-    </div>
-  </div>
-  <div id="stats"></div>
   
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="./imgwarp.js"></script>
@@ -228,42 +182,6 @@
             }
         }
         
-
-var json_file = [''];
-
-function downloadFile() {
-    
-  const l = json_file[0][234];
-  const r = json_file[0][454];
-  const t = json_file[0][10];
-  const b = json_file[0][152];
-  const c = { 'x': (l.x + r.x)/2, 'y': (t.y + b.y)/2, 'z': 0.0 };
-  
-  for (var i=0; i<json_file[0].length; i++) {
-    const x = (json_file[0][i].x - c.x) / Math.abs(t.x - c.x);
-    const y = (json_file[0][i].y - c.y) / Math.abs(t.y - c.y);
-    const z = json_file[0][i].z / Math.abs(t.x - c.x);
-    
-    json_file[0][i].r = Math.sqrt(x*x + y*y + z*z);
-    json_file[0][i].theta = Math.acos(z/json_file[0][i].r);
-    json_file[0][i].phi = Math.atan2(y, x);
-    
-    json_file[0][i].x = x;
-    json_file[0][i].y = y;
-    json_file[0][i].z = z;
-  }
-
-  document.getElementById('json_link').href = "data:text/plain;base64," + btoa(JSON.stringify(json_file[0]));
-  document.getElementById('json_link').download = 'face_keypoints.json';
-  document.getElementById('json_link').click();
-  document.getElementById('json_link').href = "#";
-}
-        
     </script>
-  <script src=
-  "https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
-  <script src=
-  "https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
-  <script src="./src.a2b27638.js"></script>
 </body>
 </html>
