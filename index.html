@@ -87,8 +87,8 @@
           theta = theta * Math.PI * 2;
           phi = phi * Math.PI;
           
-          var x = r + r * theta;
-          var y = r + r * Math.sin(theta) / Math.sqrt( Math.pow(Math.sin(theta),2) + Math.pow(phi,2) )
+          var x = r * theta;
+          var y = 2*r + r * Math.sin(theta) / Math.sqrt( Math.pow(Math.sin(theta),2) + Math.pow(phi,2) )
 
           return {"x":x, "y":y};
         }
@@ -101,8 +101,8 @@
             loadImg(target, canvas, img);
             
             var points = [];
-            for (var i = 0; i < slices; i++) {
-              for (var j = 0; j < stacks; j++) {
+            for (var j = 0; j < stacks; j++) {
+              for (var i = 0; i < slices; i++) {
                 points.push(vertex(i / slices, j / stacks));
                 points[points.length-1] = new ImgWarper.Point(points[points.length-1].x, points[points.length-1].y);
               }
