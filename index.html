@@ -88,7 +88,7 @@
           phi = phi * Math.PI;
           
           var x = r + r * theta;
-          var y = r + r * phi * Math.sin(theta) / Math.sqrt( Math.pow(Math.sin(x),2) + Math.pow(q,2) )
+          var y = r + r * phi * Math.sin(theta) / Math.sqrt( Math.pow(Math.sin(x),2) + Math.pow(phi,2) )
 
           return {"x":x, "y":y};
         }
