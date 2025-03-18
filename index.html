@@ -82,13 +82,15 @@
         const slices = 16;
         const stacks = 8;
         const r = 256;
+        
         function vertex(theta, phi) {
-          theta *= Math.PI * 2;
-          phi *= Math.PI;
+          theta = theta * Math.PI * 2 + Math.PI;
+          phi = phi * Math.PI + Math.PI / 2;
           
           var x = r * Math.cos(theta) * Math.sin(phi);
-          var y = r * Math.cos(phi);
-          var z = r * Math.sin(theta) * Math.sin(phi);
+          var z = r * Math.cos(phi);
+          var y = r * Math.sin(theta) * Math.sin(phi);
+          
           return {"x":x, "y":y, "z":z};
         }
 
