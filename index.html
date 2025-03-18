@@ -84,7 +84,7 @@
         
         function vertex(theta, phi, w, h) {
           
-          var x = w * theta*4;
+          var x = w * theta;
           var y = h/2 + h/2 * Math.sin(theta*4) / Math.sqrt( Math.pow(Math.sin(theta*4),2) + Math.pow(phi,2) )
 
           return {"x":x, "y":y};
