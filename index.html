@@ -83,8 +83,8 @@
         const stacks = 8;
         
         function vertex(theta, phi, w, h) {
-          theta = theta * Math.PI * 2;
-          phi = phi * Math.PI;
+          //theta = theta * Math.PI * 2;
+          //phi = phi * Math.PI;
           
           var x = w/2 * theta;
           var y = h/2 + h/2 * Math.sin(theta) / Math.sqrt( Math.pow(Math.sin(theta),2) + Math.pow(phi,2) )
