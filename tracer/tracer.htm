@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Image ApproxPolyDP Example</title>
+  <style>
+    button, select {
+      font-size: 16px;
+    }
+    button {
+      width: 48px;
+      height: 36px;
+    }
+    #svg_img {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Image ApproxPolyDP Example</h2>
+  <p>&lt;canvas&gt; elements named <b>canvasInput</b> and
+  <b>canvasOutput</b> have been prepared.<br>
+  Click <b>Try it</b> button to see the result. You can choose
+  another image.<br>
+  You can change the code in the &lt;textarea&gt; to investigate
+  more.</p>
+  <div>
+    <div class="control">
+      <button id="tryIt" disabled>•</button> <span id="num"></span><br/>
+      <input type="file" id="fileInput" name="file" accept="image/*"><br/>
+
+<button class="val" onclick="document.getElementById('th').value-=2;">&lt;</button><input class="range" id="th" type="range" value="3" min="3" max="255" step="2" style="width:256px"/><button class="val" onclick="document.getElementById('th').value++;">&gt;</button> threshold<br/>
+<button class="val" onclick="document.getElementById('sb').value--;">&lt;</button><input class="range" id="sb" type="range" value="0" min="0" max="255" step="1" style="width:256px"/><button class="val" onclick="document.getElementById('sb').value++;">&gt;</button> subtractor<br/>
+<button class="val" onclick="document.getElementById('dp').value--;">&lt;</button><input class="range" id="dp" type="range" value="-1" min="-1" max="254" step="1" style="width:256px"/><button class="val" onclick="document.getElementById('dp').value++;">&gt;</button> polygon<br/>
+
+  <select id="ath" oninput="trace();"><option value="cv.ADAPTIVE_THRESH_MEAN_C" selected>mean</option><option value="cv.ADAPTIVE_THRESH_GAUSSIAN_C">gaussian</option></select>
+
+  <button class="clr" onclick="document.getElementById('cs').value--;">&lt;</button><input id="cs" type="number" value="2" min="1" max="256" step="1"/><button class="clr" onclick="document.getElementById('cs').value++;">&gt;</button> colors<br/>
+    </div>
+  </div>
+  <div>
+    <table cellpadding="0" cellspacing="0" width="0" border="0">
+      <tr>
+        <td>
+          <canvas id="canvasInput"></canvas>
+        </td>
+        <td>
+          <span id="canvases">
+            <canvas id="posterInput"></canvas>
+          </span>
+        </td>
+        <td>
+          <span id="outputs">
+            <canvas id="canvasOutput"></canvas>
+          </span>
+        </td>
+        <td>
+          <span id="svgc"></span>
+          <img src="" id="svg_img"/>
+          <button onclick="exportSvg();">OK</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="caption">
+            canvasInput
+          </div>
+        </td>
+        <td>
+          <div class="caption">
+            posterInput
+          </div>
+        </td>
+        <td>
+          <div class="caption">
+            canvasOutput
+          </div>
+        </td>
+        <td>
+          <div class="caption">
+            svg
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p class="err" id="errorMessage"></p>
+  </div>
+  <script src="script.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+
+  // https://answers.opencv.org/question/206557/how-can-you-use-k-means-clustering-to-posterize-an-image-using-opencv-javascript/
+
+var svg, newImage, colors, cl, indices;
+var clusterCount = null;
+var posterInput = [];
+var canvasOutput = [];
+
+
+function rgbaToHsla(r, g, b, a) {
+  r /= 255; g /= 255; b /= 255;
+  let max = Math.max(r, g, b);
+  let min = Math.min(r, g, b);
+  let d = max - min;
+  let h;
+  if (d === 0) h = 0;
+  else if (max === r) h = (g - b) / d % 6;
+  else if (max === g) h = (b - r) / d + 2;
+  else if (max === b) h = (r - g) / d + 4;
+  let l = (min + max) / 2;
+  let s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  return [Math.round(h*60), Math.round(s*100), Math.round(l*100), a];
+};
+
+
+function kmeans() {
+try {
+
+  let mat = cv.imread('canvasInput');
+
+  let sample = new cv.Mat(mat.rows * mat.cols, 4, cv.CV_32F);
+  for( var y = 0; y < mat.rows; y++ ) {
+    for( var x = 0; x < mat.cols; x++ ) {
+      for( var z = 0; z < 4; z++) {
+        sample.floatPtr(y + x*mat.rows)[z] = mat.ucharPtr(y,x)[z];
+      }
+    }
+  }
+
+  clusterCount = parseInt(document.getElementById('cs').value);
+  var labels = new cv.Mat();
+  var attempts = 1;
+  var centers = new cv.Mat();
+
+  var crite = new cv.TermCriteria(cv.TermCriteria_EPS + cv.TermCriteria_MAX_ITER, 10000, 0.0001);
+  var criteria = [1, 10, 0.0001];
+
+  cv.kmeans(sample, clusterCount, labels, crite, attempts, cv.KMEANS_PP_CENTERS, centers );
+
+  newImage = new Array(clusterCount);
+  colors = new Array(clusterCount);
+  cl = new Array(clusterCount);
+
+  for(var i = 0; i < clusterCount; i++) {
+    newImage[i] = new cv.Mat(mat.size(), mat.type());
+    
+    cl[i] = new Array(4);
+    cl[i][0] = parseInt(centers.floatAt(i, 0));
+    cl[i][1] = parseInt(centers.floatAt(i, 1));
+    cl[i][2] = parseInt(centers.floatAt(i, 2));
+    cl[i][3] = parseFloat(centers.floatAt(i, 3)/255);
+
+    var hsla = rgbaToHsla(cl[i][0], cl[i][1], cl[i][2], cl[i][3]);
+
+    colors[i] = 'hsla(' + hsla[0] + ',' + hsla[1] + '%,' + hsla[2] + '%,' + hsla[3].toFixed(2) + ')';
+    console.log(colors[i]);
+
+    for( var y = 0; y < mat.rows; y++ ) {
+      for( var x = 0; x < mat.cols; x++ ) {
+        var cluster_idx = labels.intAt(y + x*mat.rows, 0);
+
+        if (i == cluster_idx) {
+          var red_ = new Uint8Array(1);
+          var green_ = new Uint8Array(1);
+          var blue_ = new Uint8Array(1);
+          var alpha_ = new Uint8Array(1);
+
+          red_[0] = centers.floatAt(cluster_idx, 0);
+          green_[0] = centers.floatAt(cluster_idx, 1);
+          blue_[0] = centers.floatAt(cluster_idx, 2);
+          alpha_[0] = centers.floatAt(cluster_idx, 3);
+
+          newImage[i].ucharPtr(y,x)[0] = red_;
+          newImage[i].ucharPtr(y,x)[1] = green_;
+          newImage[i].ucharPtr(y,x)[2] = blue_;
+          newImage[i].ucharPtr(y,x)[3] = alpha_;
+        } else {
+          newImage[i].ucharPtr(y,x)[0] = 255;
+          newImage[i].ucharPtr(y,x)[1] = 255;
+          newImage[i].ucharPtr(y,x)[2] = 255;
+          newImage[i].ucharPtr(y,x)[3] = 255;
+        }
+      }
+    }
+  }
+  posterInput = new Array(clusterCount);
+  document.getElementById('canvases').innerHTML = '';
+  
+  indices = new Array(clusterCount);
+  for (var i = 0; i < clusterCount; i++) {
+    indices[i] = i;
+  }
+  indices.sort(function (a, b) { 
+    return cl[a][0]+cl[a][1]+cl[a][2] < cl[b][0]+cl[b][1]+cl[b][2];
+  });
+
+  var labels = [];
+  for (var i=0; i<clusterCount; i++) {
+    posterInput[i] = document.createElement("canvas");
+    posterInput[i].id = 'posterInput' + i;
+    const ctx = posterInput[i].getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    
+    labels[i] = document.createElement("div");
+    labels[i].innerText = i + ' ' + colors[indices[i]];
+
+    document.getElementById('canvases').appendChild(labels[i]);
+    document.getElementById('canvases').appendChild(posterInput[i]);
+    cv.imshow('posterInput' + i, newImage[indices[i]]);
+  }
+  mat.delete();
+
+} catch (e) {alert(e);}
+};
+
+
+function trace() {
+try {
+
+  canvasOutput = new Array(clusterCount);
+  document.getElementById('outputs').innerHTML = '';
+
+  svg = '<svg height="'+newImage[0].rows+'" width="'+newImage[0].cols+'" xmlns="http://www.w3.org/2000/svg">';
+
+  for (var k=1; k<clusterCount; k++) {
+    let src = cv.imread('posterInput' + k);
+    let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+
+    //cv.threshold(src, src, document.getElementById('th').value, 255, cv.THRESH_BINARY);
+    cv.adaptiveThreshold(src, src, 255, eval(document.getElementById('ath').value), cv.THRESH_BINARY, document.getElementById('th').value, document.getElementById('sb').value);
+
+    let contours = new cv.MatVector();
+    let hierarchy = new cv.Mat();
+    let poly = new cv.MatVector();
+
+    cv.findContours(src, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
+
+    // approximates each contour to polygon
+    let points = [];
+    for (let i = 0; i < contours.size(); i++) {
+      let tmp = new cv.Mat();
+      let cnt = contours.get(i);
+
+      if (document.getElementById('dp').value >= 0) {
+        // You can try more different parameters
+        cv.approxPolyDP(cnt, tmp, document.getElementById('dp').value, true);
+      } else {
+        tmp = cnt.clone();
+      }
+
+      poly.push_back(tmp);
+      points[i] = [];
+      for (let j = 0; j < tmp.data32S.length; j += 2){
+        let p = {};
+        p.x = tmp.data32S[j];
+        p.y = tmp.data32S[j+1];
+        points[i].push(p);
+      }
+      //console.log(points[i]);
+      cnt.delete(); tmp.delete();
+    }
+
+    let hier = [];
+    let holes = [];
+    for (let j = 0; j < hierarchy.data32S.length; j+=4){
+      hier[j/4] = new Array(4);
+
+      hier[j/4][0] = hierarchy.data32S[j];
+      hier[j/4][1] = hierarchy.data32S[j+1];
+      hier[j/4][2] = hierarchy.data32S[j+2];
+      hier[j/4][3] = hierarchy.data32S[j+3];
+    }
+    for (let j = 0; j < hier.length; j++){
+      var pt = hier[j][3];
+      holes[j] = true;
+
+      while (pt > -1) {
+        holes[j] = !holes[j];
+        pt = hier[pt][3];
+      }
+    }
+    //alert(JSON.stringify(hier) + '\n\n' + JSON.stringify(holes));
+
+    // draw contours
+    svg += '<path fill="'+colors[indices[k]]+'" stroke="'+colors[indices[k]]+'" fill-rule="evenodd" stroke-width="0" d="';
+    for (let i = 1; i < contours.size(); i++) {
+
+      let color = new cv.Scalar(Math.round(i / contours.size() * 128 + 127), Math.round(i / contours.size() * 128 + 127), Math.round(i / contours.size() * 128 + 127));
+      cv.drawContours(dst, poly, i, color, 1, cv.LINE_AA, hierarchy, 0);
+
+      for (let j = 0; j < points[i].length; j++) {
+        dst.ucharPtr(points[i][j].y, points[i][j].x)[0] = 255;
+        dst.ucharPtr(points[i][j].y, points[i][j].x)[1] = 0;
+        dst.ucharPtr(points[i][j].y, points[i][j].x)[2] = 255;
+        dst.ucharPtr(points[i][j].y, points[i][j].x)[3] = 255;
+
+        if (j == 0) { if (i > 1) {svg += 'Z ';} svg += 'M'; } else { svg += 'L'; }
+        svg += points[i][j].x + ' ' + points[i][j].y + ' ';
+      }
+    }
+    svg += 'Z"/>';
+
+    canvasOutput[k] = document.createElement("canvas");
+    canvasOutput[k].id = 'canvasOutput' + k;
+    document.getElementById('outputs').appendChild(canvasOutput[k]);
+    cv.imshow('canvasOutput' + k, dst);
+
+    src.delete(); dst.delete(); hierarchy.delete(); contours.delete(); poly.delete();
+  }
+
+  svg += '</svg>';
+  document.getElementById('errorMessage').innerText = svg;
+  document.getElementById('svgc').innerHTML = svg;
+
+  calcDifference();
+
+} catch (e) {alert(e);}
+};
+
+
+function showOriginal() {
+  clusterCount = 2;
+  colors = [null, 'rgba(0,0,0,1.0)'];
+
+  newImage = new Array(2);
+  newImage[0] = cv.imread('canvasInput');
+  newImage[1] = newImage[0];
+  document.getElementById('canvases').innerHTML = '';
+
+  posterInput = [ null, document.createElement("canvas") ];
+  posterInput[1].id = 'posterInput1';
+  const ctx = posterInput[1].getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+  document.getElementById('canvases').appendChild(posterInput[1]);
+  cv.imshow('posterInput1', newImage[1]);
+};
+
+
+function calcDifference() {
+  var svg_img = document.getElementById('svg_img');
+  var c_out = document.createElement("canvas");
+  c_out.style.border = '1px dotted gray';
+
+  svg_img.onload = function() {
+    c_out.width = svg_img.width;
+    c_out.height = svg_img.height;
+
+    const ctx_out = c_out.getContext("2d");
+    const ctx_in = document.getElementById('canvasInput').getContext("2d");
+
+    ctx_out.fillStyle = "rgba(255,255,255,255)";
+    ctx_out.fillRect(0, 0, c_out.width, c_out.height);
+    ctx_out.drawImage(svg_img, 0, 0);
+
+    const imgData_in = ctx_in.getImageData(0, 0, svg_img.width, svg_img.height);
+    const imgData_out = ctx_out.getImageData(0, 0, svg_img.width, svg_img.height);
+    
+    for (let i = 0; i < imgData_out.data.length; i += 4) {
+      imgData_out.data[i] = 255-Math.abs(imgData_out.data[i]-imgData_in.data[i]);
+      imgData_out.data[i+1] = 255-Math.abs(imgData_out.data[i+1]-imgData_in.data[i+1]);
+      imgData_out.data[i+2] = 255-Math.abs(imgData_out.data[i+2]-imgData_in.data[i+2]);
+      imgData_out.data[i+3] = 255; //Math.abs(imgData_out.data[i+3]-imgData_in.data[i+3]);
+    }
+    ctx_out.putImageData(imgData_out, 0, 0);
+    document.getElementById('svgc').appendChild(c_out);
+  }
+  svg_img.src = 'data:image/svg+xml;base64,' + btoa(document.getElementById('svgc').innerHTML);
+};
+
+
+function exportSvg() {
+try {
+  window.top.document.getElementById('svgData').value = svg;
+} catch(e) {alert(e);}
+};
+  
+
+  let utils = new Utils('errorMessage');
+  utils.addFileInputHandler('fileInput', 'canvasInput');
+
+  let tryIt = document.getElementById('tryIt');
+  tryIt.addEventListener('click', () => {
+
+    if (clusterCount == null || clusterCount != parseInt(document.getElementById('cs').value)) {
+      if (parseInt(document.getElementById('cs').value) > 1) {
+        kmeans();
+      } else {
+        showOriginal();
+      }
+    }
+    trace();
+  });
+
+  let vals = document.getElementsByClassName('val');
+  for (let j = 0; j < vals.length; j++) {
+    vals[j].addEventListener('click', () => {
+
+      if (clusterCount != null) {
+        trace();
+      }
+      document.getElementById('num').innerText = ranges[parseInt(j/2)].value;
+    });
+  }
+  let ranges = document.getElementsByClassName('range');
+  for (let j = 0; j < ranges.length; j++) {
+    ranges[j].addEventListener('input', (e) => {
+
+      if (clusterCount != null) {
+        trace();
+      }
+      document.getElementById('num').innerText = e.target.value;
+    });
+  }
+  let clrs = document.getElementsByClassName('clr');
+  for (let j = 0; j < clrs.length; j++) {
+    clrs[j].addEventListener('click', (e) => {
+
+      if (parseInt(document.getElementById('cs').value) > 1) {
+        kmeans();
+      } else {
+        showOriginal();
+      }
+      trace();
+    });
+  }
+  document.getElementById('cs').addEventListener('change', (e) => {
+
+    if (parseInt(document.getElementById('cs').value) > 1) {
+      kmeans();
+    } else {
+      showOriginal();
+    }
+    trace();
+  });
+
+  utils.loadOpenCv(() => {
+    tryIt.removeAttribute('disabled');
+  });
+  </script> 
+  <script>
+  (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'924844975a647133',t:'MTc0MjY3MzU1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+  </script>
+</body>
+</html>
