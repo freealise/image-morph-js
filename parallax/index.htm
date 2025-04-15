@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>svg_parallax</title>
+</head>
+<body>
+  <h1>svg_parallax</h1>
+  <div id="test"></div>
+
+<svg id='svg'
+  width='1024'
+  height='512'
+  viewBox='0 0 1024 512' 
+  xmlns='http://www.w3.org/2000/svg'>
+  <style></style>
+  <filter id='displacementFilter' color-interpolation-filters='sRGB'>
+    <feImage id='feimage' crossorigin='anonymous' width='100%' height='100%' x='0' y='0' result='10_MAP' href='https://freeali.se/panoramera/examples/basic/f0_dmap_.png'/>
+    <feGaussianBlur result='blurred' in='10_MAP' stdDeviation='15,15' />
+    <feDisplacementMap id='dmap' result='fedm' in2='blurred' in='SourceGraphic' scale='2' xChannelSelector='G' yChannelSelector='A' />
+  </filter>
+  <image id='inimage' crossorigin='anonymous' href='https://freeali.se/panoramera/examples/basic/f0.jpg' x='0' y='0' height='100%' width='100%' style='filter: url(#displacementFilter)'/>
+</svg>
+
+<div>
+<input type="range" min="-128" max="128" value="0" step="1" id="scale"/>
+</div>
+
+  <script>
+
+document.getElementById('scale').addEventListener("input", displace);
+
+
+function displace(e) {
+  document.getElementById('dmap').setAttributeNS(null, 'scale', ''+e.target.value);
+}
+
+
+var url;
+document.getElementById('svg').onload = () => {
+  // no longer need to read the blob so it's revoked
+  URL.revokeObjectURL(url);
+};
+
+
+function loadImage(){
+  document.getElementsByTagName('canvas')[1].toBlob((blob) => {
+    url = URL.createObjectURL(blob);
+
+    document.getElementById('feimage').outerHTML = '<feImage id="feimage" crossorigin="anonymous" width="100%" height="100%" x="0" y="0" result="10_MAP" href="' + url + '"/>';
+  });
+
+  document.getElementsByTagName('canvas')[0].toBlob((blob) => {
+    url = URL.createObjectURL(blob);
+
+    document.getElementById('inimage').outerHTML = '<image id="inimage" crossorigin="anonymous" href="' + url + '" x="0" y="0" height="100%" width="100%" style="filter: url(#displacementFilter)"/>';
+  });
+}
+
+
+document.getElementsByTagName('img')[1].onload = function(e) {
+  document.getElementById('feimage').outerHTML = '<feImage id="feimage" crossorigin="anonymous" width="100%" height="100%" x="0" y="0" result="10_MAP" href="' + e.target.src + '"/>';
+}
+
+document.getElementsByTagName('img')[0].onload = function(e) {
+  document.getElementById('inimage').outerHTML = '<image id="inimage" crossorigin="anonymous" href="' + e.target.src + '" x="0" y="0" height="100%" width="100%" style="filter: url(#displacementFilter)"/>';
+}
+
+  </script>
+</body>
+</html>
