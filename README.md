@@ -1,10 +1,14 @@
+### TODO:
+use points from contour detector as control points  
+
+
 # image-morph-js
 JavaScript library for image morphing
 
-demo: http://peter.pisljar.si/playground/face-morph-lib/
-demo2: http://peter.pisljar.si/playground/face-morph-2/
-
-blog: http://peter.pisljar.si/#/en/projects/image_morph_js
+demo: http://peter.pisljar.si/playground/face-morph-lib/  
+demo2: http://peter.pisljar.si/playground/face-morph-2/  
+  
+blog: http://peter.pisljar.si/#/en/projects/image_morph_js  
 
 
 
