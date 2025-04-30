@@ -1,5 +1,6 @@
 ### TODO:
-use points from contour detector as control points  
+- use points from contour detector as control points  
+- keep the original formants by composite operations after TTS pitch correction; then prolong vowels, shorten consonants and get a singing voice  
 
 
 # image-morph-js
